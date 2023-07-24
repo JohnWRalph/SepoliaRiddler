@@ -34,6 +34,7 @@
     let outcome: Outcome = Outcome.NOTHING;
 
     async function submitGuess() {
+        console.log($activeRiddle.index)
         console.log(guess);
         // let guessString: string = "";
         if (!guess.length) {
@@ -93,7 +94,8 @@
                 RIDDLER_ABI,
                 provider.getSigner()
             );
-            const tx = await contract.guess($activeRiddleIndex, guessString, {
+  
+            const tx = await contract.guess($activeRiddle.index, guessString, {
                 value: $minDepositAmount,
             });
 
