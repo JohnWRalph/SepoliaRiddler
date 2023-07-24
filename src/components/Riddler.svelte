@@ -181,6 +181,7 @@
     }
     async function getRiddleByIndex(index) {
         let provider;
+        console.log("index", index);
         if ($hasMetamask) {
             provider = new ethers.providers.Web3Provider(
                 (window as any).ethereum
@@ -239,6 +240,24 @@
             activeRiddle.set(riddle);
             activeRiddleIndex.set(index);
             calculatePayout(riddle, $minDepositAmount);
+            setTimeout(() => {
+                try {
+                    button = document.getElementById(
+                        "submitGuessButton"
+                    ) as HTMLButtonElement;
+                    if ($activeRiddle.isSolved === true) {
+                        button.disabled = true;
+                        button.innerHTML = "Riddle Solved";
+                        button.classList.add("btn-disabled");
+                    } else {
+                        button.disabled = false;
+                        button.innerHTML = "Submit Answer";
+                        button.classList.remove("btn-disabled");
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }, 100);
         }
     }
     let riddleIndex: number;

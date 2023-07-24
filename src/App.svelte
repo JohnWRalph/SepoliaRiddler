@@ -18,8 +18,7 @@
   import getsolvedRiddles from "./utils/getSolvedRiddles";
   import checkChainForGoerli from "./utils/checkChainForGoerli";
   import { alertLink, alertMessage, alertState } from "./store/alert";
-console.log(import.meta.env.VITE_CONTRACT_ADDRESS)
-console.log(import.meta.env.VITE_API_KEY)
+
   const routes = {
     "/": Home,
     "/construction": Construction,
