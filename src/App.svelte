@@ -59,7 +59,7 @@
       minDepositAmount.set(minDepositAmountNumber);
       var solvedRiddlesSet = await getsolvedRiddles(newContract);
       solvedRiddles.set(solvedRiddlesSet);
-      console.log($solvedRiddles)
+     
       unsolvedRiddles.set($riddles.filter((obj) => obj.isSolved === false));    
       
     } catch (error) {
