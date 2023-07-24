@@ -227,7 +227,7 @@
             }, 100);
         } else {
             provider = new ethers.providers.JsonRpcProvider(
-                "https://eth-goerli.g.alchemy.com/v2/dRgyJz4peo7d2TS-40O3F9qfYmtMsHCd"
+               import.meta.env.VITE_API_KEY
             );
             const newContract = new Contract(
                 import.meta.env.VITE_CONTRACT_ADDRESS,
