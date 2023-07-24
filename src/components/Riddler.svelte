@@ -234,6 +234,7 @@
                 RIDDLER_ABI,
                 provider
             );
+           
             const riddle = await newContract.getRiddleByIndex(riddleIndex);
             activeRiddle.set(riddle);
             activeRiddleIndex.set(index);
@@ -242,7 +243,7 @@
     }
     let riddleIndex: number;
 </script>
-<img loading="lazy" class="riddlerImage" src="src/assets/Riddler.png" alt="" />
+<img loading="lazy" class="riddlerImage" src="Riddler.png" alt="" />
 
 
 <div id="homeText" class="max-w-6/12">

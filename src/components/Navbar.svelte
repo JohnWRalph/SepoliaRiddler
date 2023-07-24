@@ -32,18 +32,18 @@
   </div>
   <div class="navbarLinks" style="position:absolute;right:0;gap:10px;">
     <button class="btn navbarButton" style="display:flex; flex-direction:row;">
-      <img style="height:100%;" src="/src/assets/etherscan-logo.svg" alt="" />
+      <img style="height:100%;" src="etherscan-logo.svg" alt="" />
     </button>
     <button class=" btn navbarButton" style="display:flex; flex-direction:row;">
       <img
         style="height:100%;"
-        src="/src/assets/GitHub_Logo_White.png"
+        src="GitHub_Logo_White.png"
         alt=""
       />
       <img
       id="github-mark"
         style="height:100%;"
-        src="/src/assets/github-mark-white.svg"
+        src="github-mark-white.svg"
         alt=""
       />
     </button>
