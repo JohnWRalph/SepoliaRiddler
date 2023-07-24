@@ -18,7 +18,7 @@
 <div class="card shadow-md bg-primary text-primary-content">
     <div class="cardQuestion">
         {question}
-        ?
+        
     </div>
     <div  class="overflow-x-auto">
         <table style="width:100%;"  class="table table-zebra">
@@ -50,24 +50,6 @@
             </tbody>
         </table>
     </div>
-    <!-- <div class="questions">
-        <div class="questionDetails">Solver:</div>
-        <div style="" class="questionDetails">
-            {riddleInfo.args[0]}
-        </div>
-    </div>
-    <div class="questions">
-        <div class="questionDetails">
-            Question: {riddleInfo.args.question}
-        </div>
-        <div class="questionDetails">
-            Answer: {riddleInfo.args.answer}<br />
-        </div>
-    </div>
-
-    <div class="questionDetails">
-        Reward:{riddleInfo.args.payoutRewardAmount.toNumber()} wei
-    </div> -->
 </div>
 
 <style global lang="postcss">
@@ -78,7 +60,7 @@
         display: flex;
 
         grid-gap: 5px;
-        max-width: 960px;
+        width:600px;
         margin: 0 auto;
 
         gap: 10px;

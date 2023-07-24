@@ -19,4 +19,6 @@ const modalError = writable<boolean>(false)
 const createdAnswer = writable<string>()
 const riddleSolvedNotification = writable<boolean>()
 const riddleSolvedNotificationText = writable<string>()
-export {riddles, activeRiddle, activeRiddleIndex, minDepositAmount, rewardAmount, solvedRiddles, myriddles,payout, isLoadingRiddles, unsolvedRiddles, createdRiddleIndex, createdRiddle,modalError, createdAnswer, riddleSolvedNotification, riddleSolvedNotificationText}
+const convertedRiddle = writable<string>()
+const riddleStructure = writable<string[]>()
+export {riddles, activeRiddle, activeRiddleIndex, minDepositAmount, rewardAmount, solvedRiddles, myriddles,payout, isLoadingRiddles, unsolvedRiddles, createdRiddleIndex, createdRiddle,modalError, createdAnswer, riddleSolvedNotification, riddleSolvedNotificationText, convertedRiddle, riddleStructure}

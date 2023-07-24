@@ -9,6 +9,8 @@
         isLoadingRiddles,
         riddleSolvedNotification,
         riddleSolvedNotificationText,
+        convertedRiddle,
+        riddleStructure,
     } from "../store/riddles";
     import { hasMetamask } from "../store/account";
     import { Contract, ethers } from "ethers";
@@ -20,6 +22,7 @@
     import { calculatePayout } from "../utils/calculatePayout";
     import RiddleCard from "./RiddleCard.svelte";
     import truncateDescription from "../utils/truncateDescription";
+    import isAlphanumericOrNumber from "../utils/isAlphanumericOrNumber";
     //checks
     checkForEthereum();
 
@@ -32,13 +35,13 @@
         NOTHING,
     }
     let button;
-let guessString;
+    let guessString;
     let outcome: Outcome = Outcome.NOTHING;
 
     async function submitGuess() {
         console.log($activeRiddle.index);
         console.log(guess);
-        // let guessString: string = "";
+        let guessString: string = "";
         if (!guess.length) {
             setAlert("error", "Please enter a guess");
             return;
@@ -46,7 +49,7 @@ let guessString;
         console.log("guess", guess);
         console.log("guesslength", guess.length);
 
-        for (let i = 0; i < $activeRiddle.answerLength; i++) {
+        for (let i = 0; i < $activeRiddle.answerStructure.length; i++) {
             console.log(guess[i]);
             if (!guess[i]) {
                 guess[i] = " ";
@@ -54,18 +57,7 @@ let guessString;
         }
         console.log("guess", guess);
         guessString = guess.join("");
-        console.log("guessString", typeof guessString);
-        console.log("guessStringlength", guessString.length);
-        // console.log("guessString",guessString);
-        // console.log("guessStringlength",guessString.length);
-        //add all elements of array to string and if element is empty replace with space
-        // let guessJoined = guess.join(",");
-        // console.log("guessJoined",guessJoined);
-        // let guessString = guessJoined.replace(/,,/g, " ");
-        // console.log("guessString",guessString);
-        // console.log("guessStringlength",guessString.length);
-        // if element is empty replace with space
-
+        console.log(guessString);
         if ((await checkForEthereum()) === false) {
             return;
         }
@@ -77,7 +69,7 @@ let guessString;
         }
 
         if (!$ethereumAccount || !$ethereumAccount.length) {
-            setAlert("warning", "Please connect your wallet")
+            setAlert("warning", "Please connect your wallet");
             return;
         }
         button = document.getElementById(
@@ -97,9 +89,13 @@ let guessString;
                 provider.getSigner()
             );
 
-            const tx = await contract.guess($activeRiddle.index, guessString, {
-                value: $minDepositAmount,
-            });
+            const tx = await contract.guess(
+                $activeRiddle.index,
+                guessString.toLowerCase(),
+                {
+                    value: $minDepositAmount,
+                }
+            );
 
             txHash = tx.hash;
             const receipt = await tx.wait(1);
@@ -115,7 +111,7 @@ let guessString;
                     riddleSolvedNotificationText.set(
                         "You won! The answer was " +
                             guessString +
-                            ". view on etherscan: https://goerli.etherscan.io/tx/" +
+                            ". View on etherscan: https://goerli.etherscan.io/tx/" +
                             txHash
                     );
                     setTimeout(() => {
@@ -180,7 +176,15 @@ let guessString;
                 // activeRiddleIndex.set(Math.floor(Math.random() * $riddles.length));
                 activeRiddle.set(unsolvedRiddles[$activeRiddleIndex]);
                 calculatePayout($activeRiddle, $minDepositAmount);
-                console.log($activeRiddle);
+                console.log($activeRiddle.answerStructure);
+                let riddleStructureArray = [];
+                console.log($activeRiddle.answerStructure.length);
+                for (let i = 0; i < $activeRiddle.answerStructure.length; i++) {
+                    riddleStructureArray.push($activeRiddle.answerStructure[i]);
+                }
+                console.log(riddleStructureArray);
+                riddleStructure.set(riddleStructureArray);
+                console.log($riddleStructure);
             }
         } else {
         }
@@ -211,7 +215,15 @@ let guessString;
             activeRiddleIndex.set(index);
             console.log($activeRiddle);
             calculatePayout($activeRiddle, $minDepositAmount);
-            
+            console.log($activeRiddle.answerStructure);
+            let riddleStructureArray = [];
+            console.log($activeRiddle.answerStructure.length);
+            for (let i = 0; i < $activeRiddle.answerStructure.length; i++) {
+                riddleStructureArray.push($activeRiddle.answerStructure[i]);
+            }
+            console.log(riddleStructureArray);
+            riddleStructure.set(riddleStructureArray);
+            console.log($riddleStructure);
             setTimeout(() => {
                 try {
                     button = document.getElementById(
@@ -252,7 +264,15 @@ let guessString;
             activeRiddleIndex.set(index);
             console.log($activeRiddle);
             calculatePayout($activeRiddle, $minDepositAmount);
-            
+            console.log($activeRiddle.answerStructure);
+            let riddleStructureArray = [];
+            console.log($activeRiddle.answerStructure.length);
+            for (let i = 0; i < $activeRiddle.answerStructure.length; i++) {
+                riddleStructureArray.push($activeRiddle.Structure[i]);
+            }
+            console.log(riddleStructureArray);
+            riddleStructure.set(riddleStructureArray);
+            console.log($riddleStructure);
             setTimeout(() => {
                 try {
                     button = document.getElementById(
@@ -274,6 +294,252 @@ let guessString;
         }
     }
     let riddleIndex: number;
+
+    function incrementRiddleLetter(e, riddleStructure, i) {
+        if(e.keyCode === 16){
+            return;
+        }
+        
+        if (e.key !== "Backspace") {
+            
+            if (!isAlphanumericOrNumber(e)) {
+            setAlert(
+                "warning",
+                "Please limit answers to alphanumeric characters and spaces"
+            );
+            e.preventDefault();
+            return; // Prevent the default behavior for non-alphanumeric and non-number keys
+        }
+            
+            console.log("incrementUp");
+            const submitGuessInputs = document.getElementById(
+                "submitGuessInputs"
+            ) as HTMLInputElement;
+            const guessInputDivs = submitGuessInputs.getElementsByClassName(
+                "answerElement"
+            ) as any;
+            console.log(submitGuessInputs);
+            console.log(riddleStructure[i + 1]);
+            if (riddleStructure[i + 1] === "{") {
+                setTimeout(() => {
+                    guessInputDivs[i + 1].focus();
+                }, 10);
+                return;
+            } else if (riddleStructure[i + 1] === " ") {
+                setTimeout(() => {
+                    guessInputDivs[i + 2].focus();
+                }, 10);
+
+                return;
+            } else {
+                return;
+            }
+        } else {
+            console.log(e);
+            //listen for backspace
+            console.log("incrementDown");
+            const submitGuessInputs = document.getElementById(
+                "submitGuessInputs"
+            ) as HTMLInputElement;
+            const guessInputDivs = submitGuessInputs.getElementsByClassName(
+                "answerElement"
+            ) as any;
+            console.log(guessInputDivs[i].value);
+
+            if (guessInputDivs[i].value) {
+                guess[i] = "";
+                return;
+            }
+            
+            if (riddleStructure[i - 1] === "{") {
+                guessInputDivs[i - 1].focus();
+                return;
+            } else if (riddleStructure[i - 1] === " ") {
+                guessInputDivs[i - 2].focus();
+                return;
+            } else {
+                return;
+            }
+            //     else if (guessInputDivs[i - 1].value) {
+            //         guessInputDivs[i - 1].focus();
+            //         return;
+            //     } else {
+            //         guessInputDivs[i - 1].focus();
+            //         return;
+            //     }
+            // } else if (riddleStructure[i - 1] === " ") {
+            //     guessInputDivs[i - 2].focus();
+            // } else {
+            //     // guessInputDivs[i - 1].focus();
+            // }
+            // console.log(this)
+            // console.log("guess1", guess);
+        }
+
+        // console.log(submitGuessInputs);
+        // console.log(riddleStructure[i - 1]);
+        // if (riddleStructure[i - 1] === "{") {
+        //     guessInputDivs[i - 1].focus();
+        //     return;
+        // } else if (riddleStructure[i - 1] === " ") {
+        //     guessInputDivs[i - 2].focus();
+        //     return;
+        // } else {
+        //     return;
+        // }
+    }
+    // const previous = element[i - 1] as HTMLInputElement;
+
+    // if (previous === undefined) {
+    //     return;
+    // }
+    // const previousClass = previous.className;
+
+    // if (previousClass.includes("spacer")) {
+    //     guess[i - 2] = "";
+    //     const previousPrevious = element[i - 2] as HTMLInputElement;
+    //     console.log(previousPrevious);
+    //     console.log(previousPrevious.innerHTML.length);
+    //     setTimeout(() => {
+    //         previousPrevious.focus();
+    //     }, 10);
+    // } else if (previous !== null) {
+    //     guess[i] = "";
+    //     guess[i - 1] = "";
+    //     setTimeout(() => {
+    //         previous.focus();
+    //     }, 10);
+    // }
+
+    function autotabInput(e: KeyboardEvent, i) {
+        console.log("hdhd");
+        // console.log(e,i);
+        console.log(e);
+        const submitGuessInputs = document.getElementById(
+            "submitGuessInputs"
+        ) as HTMLInputElement;
+        // // console.log(submitGuessInputs);
+        const guessInputDivs =
+            submitGuessInputs.getElementsByClassName("answerElement");
+
+        if (!isAlphanumericOrNumber(e)) {
+            setAlert(
+                "warning",
+                "Please limit answers to alphanumeric characters and spaces"
+            );
+            e.preventDefault();
+            return; // Prevent the default behavior for non-alphanumeric and non-number keys
+        }
+
+        // if (e.key === "ArrowLeft") {
+        //     console.log("backspace");
+        //     // incrementDown(guessInputDivs, i);
+        // } else {
+        //     // incrementUp(guessInputDivs, i);
+        // }
+
+        // const autotab = document.getElementsByClassName("autotab");
+        // const answerElement =
+        //     submitGuessInputs.getElementsByClassName("answerElement");
+
+        // if (e.key === "Backspace") {
+        //     incrementDown(answerElement, i);
+        // } else {
+        //     incrementUp(answerElement, i);
+        // }
+
+        // console.log(autotab);
+        // console.log(e.key);
+        // console.log(submitGuessInputs);
+        // for(let i = 0; i < submitGuessInputs.length; i++) {
+        //     console.log(autotab[i]);
+
+        // }
+
+        // for (let i = 0; i < autotab.length; i++) {
+
+        // autotab[i].addEventListener(
+        //     "keypress",
+        //     function (event: KeyboardEvent) {
+        //         console.log(event.key);
+        //
+        //     }
+        // );
+        // }
+    }
+
+    //if key is alphanumeric or numeric and not backspace
+    //         console.log(e);
+
+    //         if (e.key.match(/[a-z0-9]/i)
+
+    //         // e.keyCode >= 48 && e.keyCode <= 57 ||
+    //         //     e.keyCode >= 65 && e.keyCode <= 90 ||
+    //         //     e.keyCode >= 96 && e.keyCode <= 112 ||
+    //         //     e.keyCode > 185 && e.keyCode < 193
+
+    //             ) {
+    //             console.log(e.key);
+    //         }
+    //         // e.key.code.match(/[0-9]/) ||
+    //         // e.key.code.match(/[-!$%^&*()_+|~=`{}[\]:";'<>?,./]/)) &&
+    //         //     e.key.code !== "Backspace"
+    //         //    {
+    //         //     console.log(e.keyCode)
+    //         //     //get next element
+    //         //     const next = this.nextElementSibling;
+    //         //     const inputID = this.id.split("-")[1];
+    //         //     guess[Number(inputID)] = this.value;
+    //         //     guess[Number(inputID) + 1] = "";
+    //         //     if (next === null) {
+    //         //         return;
+    //         //     }
+    //         //     const nextClass = next.className;
+    //         //     console.log(nextClass);
+    //         //     //if next element is a spacer, get the next element
+    //         //     if (nextClass.includes("spacer")) {
+    //         //         const nextNext = next.nextElementSibling;
+    //         //         nextNext.focus();
+    //         //     } else if (next !== null) {
+    //         //         next.focus();
+    //         //     }
+    //         // } else if (e.key.code === "Backspace") {
+    //         //     //get previous element
+    //         //     const previous = this.previousElementSibling;
+    //         //     const inputID = this.id.split("-")[1];
+    //         //     guess[Number(inputID)] = "";
+    //         //     guess[Number(inputID - 1)] = "";
+    //         //     if (previous === null) {
+    //         //         return;
+    //         //     }
+    //         //     const previousClass = previous.className;
+
+    //         //     if (previousClass.includes("spacer")) {
+    //         //         const previousPrevious =
+    //         //             previous.previousElementSibling;
+    //         //         previousPrevious.focus();
+    //         //     } else if (previous !== null) {
+    //         //         previous.focus();
+    //         //     }
+    //         // }
+    //         // // if (this.value.length == this.maxLength)
+    //         // else {
+    //         //     // const next = this.nextElementSibling;
+    //         //     // if (next === null) {
+    //         //     //     return;
+    //         //     // }
+    //         //     // const nextClass = next.className;
+    //         //     // console.log(nextClass);
+    //         //     // //if next element is a spacer, get the next element
+    //         //     // if (nextClass.includes("spacer")) {
+    //         //     //     const nextNext = next.nextElementSibling;
+    //         //     //     nextNext.focus();
+    //         //     // } else if (next !== null) {
+    //         //     //     next.focus();
+    //         //     // }
+    //         // }
+    //     });
+    // }
 </script>
 
 <img loading="lazy" class="riddlerImage" src="Riddler.png" alt="" />
@@ -287,11 +553,12 @@ let guessString;
     line-height: normal;"
         class="py-8"
     >
-        Solve the riddles and earn a reward.
+        Solve Riddles and Trivia To Earn GETH.
     </p>
 </div>
 <div style="display:flex; flex-direction:row;" class="join">
     <input
+        id="inputField"
         style="border-bottom-right-radius:0; border-top-right-radius:0;"
         type="text"
         placeholder="Riddle ID"
@@ -311,59 +578,76 @@ let guessString;
 >
 <br />
 
-<div class="card shadow-md bg-primary text-primary-content">
+<div style="display:flex; flex-direction:column;" class="hero shadow-md bg-primary text-primary-content">
     <div class="card-body">
         {#if $activeRiddle}
-        <div class="card shadow-md bg-primary text-primary-content">
-            <div class="cardQuestion">
-                {$activeRiddle.question}
-                ?
+            <div class="card shadow-md bg-primary text-primary-content">
+                <div class="cardQuestion">
+                    {$activeRiddle.question}
+                </div>
+                <div class="overflow-x-auto">
+                    <table style="width:100%;" class="table table-zebra">
+                        <!-- head -->
+
+                        <tbody style="border-radius:0px;">
+                            <!-- row 1 -->
+
+                            <tr>
+                                <td style="width:25%;">Creator</td>
+                                <td
+                                    >{truncateDescription(
+                                        $activeRiddle.creator
+                                    )}</td
+                                >
+                            </tr>
+
+                            <!-- row 2 -->
+                            <tr>
+                                <td>Initial reward</td>
+                                <td>{$activeRiddle.createRiddleRewardAmount}</td
+                                >
+                            </tr>
+                            <!-- row 3 -->
+                            <tr>
+                                <td>Wrong Guess Bonus</td>
+                                <td>{$activeRiddle.wrongGuessRewardAmount}</td>
+                            </tr>
+                            <!-- row 4 -->
+                            <tr>
+                                <td>Id</td>
+                                <td>{$activeRiddle.index}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div  class="overflow-x-auto">
-                <table style="width:100%;"  class="table table-zebra">
-                    <!-- head -->
-        
-                    <tbody style="border-radius:0px;">
-                        <!-- row 1 -->
-        
-                        <tr>
-                            <td style="width:25%;">Creator</td>
-                            <td>{truncateDescription($activeRiddle.creator)}</td>
-                        </tr>
-        
-                        <!-- row 2 -->
-                        <tr>
-                            <td>Initial reward</td>
-                            <td>{$activeRiddle.createdRiddleRewardAmount}</td>
-                        </tr>
-                        <!-- row 3 -->
-                        <tr>
-                            <td>Wrong Guess Bonus</td>
-                            <td>{$activeRiddle.wrongGuessRewardAmount}</td>
-                        </tr>
-                        <!-- row 4 -->
-                        <tr>
-                            <td>Id</td>
-                            <td>{$activeRiddle.index}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            </div> 
-            <div id="submitGuess">
+            <div id="submitGuess"><h2 class="questionDetails">Enter Below</h2>
                 <div id="submitGuessInputs">
                     {#if $activeRiddle && $activeRiddle.length}
-                        {#each { length: $activeRiddle.answerLength } as _, i}
-                            <input
-                                style="width:50px; text-align:center; margin:5px;
-                       border-radius:5px; border:1px solid black;"
-                                bind:value={guess[i]}
-                                maxlength="1"
-                                type="text"
-                                placeholder=" "
-                                class="autotab input input-bordered input-primary w-full max-w-xs"
-                            />
+                        {#each $riddleStructure as letter, i}
+                            {#if letter === " "}
+                                <div
+                                    id="spacer-{i}"
+                                    class="spacer answerElement"
+                                    style="width:50px; margin:5px; background-color:transparent"
+                                />
+                            {:else if letter === "{"}
+                                <input
+                                    on:keydown={(e) =>
+                                        incrementRiddleLetter(e, $riddleStructure, i)}
+                                    id="spacer-{i}"
+                                    style="width:50px; text-align:center; margin:5px;
+                          border-radius:5px; border:1px solid black;"
+                                    bind:value={guess[i]}
+                                    maxlength="1"
+                                    type="text"
+                                    placeholder=" "
+                                    class="autotab answerElement input input-bordered input-primary w-full max-w-xs"
+                                />
+                            {/if}
                         {/each}
+
+                       
                     {/if}
                 </div>
 
@@ -434,8 +718,8 @@ let guessString;
         justify-content: center;
         align-items: center;
     }
-    #submitGuessInputs{
-        display:flex;
+    #submitGuessInputs {
+        display: flex;
         flex-wrap: wrap;
     }
     .btn-disabled {
@@ -444,7 +728,6 @@ let guessString;
         color: black;
     }
 
-  
     .riddlerImage {
         position: relative;
         top: 0px;
@@ -455,13 +738,22 @@ let guessString;
     .card {
         display: flex;
         grid-gap: 5px;
-        max-width: 960px;
+        width: 600px;
+        /* min-width:600px; */
         margin: 0 auto;
         gap: 10px;
         border: 1px solid black;
         box-shadow: 10px 10px 0px 0px #000000;
     }
-
+    .questionDetails {
+        font-size: 2em;
+        font-weight: 900;
+        width: 80%;
+        
+        text-shadow: 2px 2px 0px #000000;
+        line-height: normal;
+        word-break: break-all;
+    }
     .cardQuestion {
         font-size: 1.5em;
         font-weight: 900;
@@ -471,17 +763,24 @@ let guessString;
         line-height: normal;
         word-break: break-all;
     }
-    
-    .questionDetails {
-        font-size: 2em;
-        font-weight: 900;
-        width: 80%;
-        margin-left: 10%;
-        text-shadow: 2px 2px 0px #000000;
-        line-height: normal;
-        word-break: normal;
+    .hero {
+        display: flex;
+        grid-gap: 5px;
+        width: 800px;
+        /* min-width:600px; */
+        margin: 0 auto;
+        gap: 10px;
+        border: 1px solid black;
+        border-radius: 20px;
+        box-shadow: 10px 10px 0px 0px #000000;
     }
+   
 
+    .autotab:focus-within {
+        border: 1px solid #2563eb;
+        box-shadow: 0 0 0 2px #d6e4ff;
+        outline: none;
+    }
     @media (min-width: 675px) and (max-width: 900px) {
         .card {
             width: 90%;

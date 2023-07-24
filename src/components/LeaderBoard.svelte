@@ -56,7 +56,7 @@
     display: flex;
 
     grid-gap: 5px;
-    max-width: 960px;
+   width:100%;
     margin: 0 auto;
 
     gap: 10px;
@@ -74,21 +74,6 @@
     margin-top: 50px;
     gap: 20px;
     /* border: 1px solid white; */
-  }
-
-  .questions {
-    width: 100%;
-    text-align: center;
-    border-bottom: 1px solid black;
-  }
-  .questionDetails {
-    font-size: 2em;
-    font-weight: 900;
-    width: 80%;
-    margin-left: 10%;
-    text-shadow: 2px 2px 0px #000000;
-    line-height: normal;
-    word-break: break-all;
   }
  
   @media (min-width: 675px) and (max-width: 900px) {

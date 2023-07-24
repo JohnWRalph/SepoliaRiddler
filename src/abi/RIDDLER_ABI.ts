@@ -15,9 +15,9 @@ export default   [
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "answerLength",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "answerStructure",
+        "type": "string"
       },
       {
         "indexed": false,
@@ -86,6 +86,12 @@ export default   [
         "internalType": "uint256",
         "name": "payoutRewardAmount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
       }
     ],
     "name": "RiddleSolved",
@@ -99,9 +105,9 @@ export default   [
         "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "answerLength",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "answerStructure",
+        "type": "string"
       },
       {
         "internalType": "string",
@@ -150,9 +156,9 @@ export default   [
             "type": "string"
           },
           {
-            "internalType": "uint256",
-            "name": "answerLength",
-            "type": "uint256"
+            "internalType": "string",
+            "name": "answerStructure",
+            "type": "string"
           },
           {
             "internalType": "bytes32",
@@ -205,9 +211,9 @@ export default   [
             "type": "string"
           },
           {
-            "internalType": "uint256",
-            "name": "answerLength",
-            "type": "uint256"
+            "internalType": "string",
+            "name": "answerStructure",
+            "type": "string"
           },
           {
             "internalType": "bytes32",
