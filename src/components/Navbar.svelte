@@ -1,69 +1,53 @@
 <script lang="ts">
-  import Router, { push } from "svelte-spa-router";
-  import Construction from "../pages/Construction.svelte";
-    import Game from "../pages/Game.svelte";
-  import Home from "../pages/Home.svelte";
-  import { ethereumAccount } from "../store/account";
-import truncateDescription from "../utils/truncateDescription";
-    import GameTabs from "./buttons/GameTabs.svelte";
-  // import Profile from "../pages/Profile.svelte";
-  // import Register from "../pages/Register.svelte";
-  // import UserList from "../pages/UserList.svelte";
-  // import { ethereumAccount } from "../store/account";
-  const routes = {
-    "/": Home,
-    "/construction": Construction,
-    "/game": Game
-  }
-
-//   const text = "Some text here : Proxy<Game> some more text";
-// const startIndex = text.indexOf("<") + 1;
-// const endIndex = text.indexOf(">");
-// const result = text.slice(startIndex, endIndex); 
-
-  // console.log(routes)
-  // console.log(routes)
-  
+  import { ethereumAccount, hasMetamask, isGoerli } from "../store/account";
+  import connectMetaMask from "../utils/connectMetamask";
+  import switchChainToGoerli from "../utils/switchChainToGoerli";
+  import truncateDescription from "../utils/truncateDescription";
 </script>
 
-<div id="navbar" class="navbar bg-base-100">
-  <div class="dropdown">
-    <label tabindex="0" class="btn btn-ghost btn-circle">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        ><path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h7"
-        /></svg
+<div id="navbar" class="navbar">
+  <div>
+    {#if $hasMetamask}
+      {#if $ethereumAccount && $ethereumAccount.length && $isGoerli}
+        Signed in as: {truncateDescription($ethereumAccount)}
+      {:else if !$ethereumAccount}
+        <button class="btn btn-primary" on:click={() => connectMetaMask()}
+          >Connect Ethereum Wallet</button
+        >
+      {:else if $ethereumAccount && $ethereumAccount.length}
+        <button
+          id="switchToGoerliButton"
+          class="btn btn-primary"
+          on:click={async () => switchChainToGoerli()}
+          >Switch chain To Goerli</button
+        >
+      {/if}
+    {:else}
+      <button
+        class="btn btn-primary"
+        on:click={() => window.open("https://metamask.io/download/")}
+        >Download Metamask</button
       >
-    </label>
-    <ul
-      tabindex="0"
-      class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-    >
-      <li><a>Homepage</a></li>
-      <li><a>Portfolio</a></li>
-      <li><a>About</a></li>
-    </ul>
+    {/if}
   </div>
-  <div class="flex-1">
-    <!-- <a class="btn btn-ghost normal-case text-xl">
-      <button on:click={async () => await push("/")}>THE RIDDLER </button></a
-    > -->
-
-    <div id="navDisappear" />
-    {#if $ethereumAccount && $ethereumAccount.length}
-      Signed in as:  {truncateDescription($ethereumAccount)}
-    {:else}{/if}
+  <div class="navbarLinks" style="position:absolute;right:0;gap:10px;">
+    <button class="btn navbarButton" style="display:flex; flex-direction:row;">
+      <img style="height:100%;" src="/src/assets/etherscan-logo.svg" alt="" />
+    </button>
+    <button class=" btn navbarButton" style="display:flex; flex-direction:row;">
+      <img
+        style="height:100%;"
+        src="/src/assets/GitHub_Logo_White.png"
+        alt=""
+      />
+      <img
+      id="github-mark"
+        style="height:100%;"
+        src="/src/assets/github-mark-white.svg"
+        alt=""
+      />
+    </button>
   </div>
-
-  
 </div>
 
 <style global lang="postcss">
@@ -78,14 +62,32 @@ import truncateDescription from "../utils/truncateDescription";
     left: 0;
     height: 60px;
     background-color: rgb(0, 0, 0);
-    /* opacity: 0.5; */
     z-index: 100;
+    border-bottom: 1px solid grey;
+    display: flex;
   }
 
-  #rightNav {
-    /* border:1px solid yellow; */
-    /* padding: 10px; */
-  }
+ 
 
-  
+  @media (max-width: 775px) {
+    #navbar {
+      flex-direction: column;
+      height: 120px;
+      width: 100%;
+    }
+    .navbarLinks {
+      top: 60px;
+      right: 50%;
+      width: 100%;
+      /* transform:translateX(-50%); */
+    }
+    .navbarButton {
+      width: 45%;
+      margin-left: 2.5%;
+    }
+    #github-mark {
+      display: none;
+    }
+    
+  }
 </style>
