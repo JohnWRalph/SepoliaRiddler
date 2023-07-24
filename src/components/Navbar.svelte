@@ -34,7 +34,9 @@
     <button class="btn navbarButton" style="display:flex; flex-direction:row;">
       <img style="height:100%;" src="etherscan-logo.svg" alt="" />
     </button>
-    <button class=" btn navbarButton" style="display:flex; flex-direction:row;">
+   
+
+    <button on:click={() => window.open("https://github.com/JohnWRalph/Riddler")} class=" btn navbarButton" style="display:flex; flex-direction:row;">
       <img
         style="height:100%;"
         src="GitHub_Logo_White.png"

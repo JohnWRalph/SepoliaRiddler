@@ -1,6 +1,8 @@
 <script lang="ts">
     import { BigNumber } from "ethers";
   import { solvedRiddles } from "../store/riddles";
+    import RiddleCard from "./RiddleCard.svelte";
+    import truncateDescription from "../utils/truncateDescription";
 
   let account;
 </script>
@@ -16,7 +18,14 @@
   {#if $solvedRiddles && $solvedRiddles.length}
     {#each $solvedRiddles as riddle}
     {#if riddle.args[0] === account}
-      <div class="card shadow-md bg-primary text-primary-content">
+
+    <RiddleCard question={riddle.args.question}
+    answer={riddle.args.answer}
+    payoutRewardAmount={riddle.args.payoutRewardAmount.toNumber()}
+    solver={truncateDescription(riddle.args[0])}
+    index={riddle.args.index}
+    />
+      <!-- <div class="card shadow-md bg-primary text-primary-content">
         <div class="questions">
           <div class="questionDetails">Solver:</div>
           <div style="" class="questionDetails">
@@ -37,7 +46,7 @@
           Reward:{BigNumber.from(riddle.args.payoutRewardAmount)} wei
 
         </div>
-      </div>
+      </div> -->
       {/if}
     {/each}
   {:else}
@@ -62,11 +71,12 @@
     grid-gap: 5px;
     max-width: 960px;
     margin: 0 auto;
-
+    width:90%;
     gap: 10px;
     border: 1px solid black;
     /* //shadow bottom right */
     box-shadow: 10px 10px 0px 0px #000000;
+    
   }
   .riddleContainer {
     display: flex;
@@ -78,6 +88,7 @@
     max-width: 960px;
     margin-top: 50px;
     gap: 20px;
+    /* border: 1px solid white; */
   }
 
  
@@ -100,5 +111,23 @@
    
     margin-top: 50px;
     
+  }
+
+  @media (min-width: 675px) and (max-width: 900px) {
+    .riddleContainer {
+      width: 600px;
+    }
+    .card {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 675px) {
+    .riddleContainer {
+      width: 90%;
+    }
+    .card {
+      width: 100%;
+    }
   }
 </style>

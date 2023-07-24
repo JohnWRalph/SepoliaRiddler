@@ -1,30 +1,21 @@
 <script lang="ts">
   import { isLoadingRiddles, solvedRiddles } from "../store/riddles";
+    import truncateDescription from "../utils/truncateDescription";
+    import RiddleCard from "./RiddleCard.svelte";
+    console.log($solvedRiddles)
 </script>
+
 
 <div class="riddleContainer">
   {#if $solvedRiddles && $solvedRiddles.length}
     {#each $solvedRiddles as riddle}
-      <div class="card shadow-md bg-primary text-primary-content">
-        <div class="questions">
-          <div class="questionDetails">Solver:</div>
-          <div style="" class="questionDetails">
-            {riddle.args[0]}
-          </div>
-        </div>
-        <div class="questions">
-          <div class="questionDetails">
-            Question: {riddle.args.question}
-          </div>
-          <div class="questionDetails">
-            Answer: {riddle.args.answer}<br />
-          </div>
-        </div>
-
-        <div class="questionDetails">
-          Reward:{riddle.args.payoutRewardAmount.toNumber()} wei
-        </div>
-      </div>
+    <RiddleCard question={riddle.args.question}
+    answer={riddle.args.answer}
+    payoutRewardAmount={riddle.args.payoutRewardAmount.toNumber()}
+    solver={truncateDescription(riddle.args[0])}
+    index={riddle.args.index}
+    />
+     
     {/each}
   {:else if $isLoadingRiddles}
     <svg

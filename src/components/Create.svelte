@@ -290,6 +290,7 @@ text-shadow: 2px 2px 0px #000000;
     <div class="modal" class:modal-open={isModalOpen}>
         <div class="modal-box">
             <h3 class="font-bold text-lg">Submission successful!</h3>
+            <h3 class="font-bold text-lg">Save this information. The answer will be encrypted on chain and cannot be recovered.</h3>
             <h2 class="card-title">
                 Riddle ID: {$createdRiddleIndex}
             </h2>

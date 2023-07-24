@@ -18,6 +18,8 @@
     import RIDDLER_ABI from "../abi/RIDDLER_ABI";
     import { setAlert } from "../utils/setAlert";
     import { calculatePayout } from "../utils/calculatePayout";
+    import RiddleCard from "./RiddleCard.svelte";
+    import truncateDescription from "../utils/truncateDescription";
     //checks
     checkForEthereum();
 
@@ -30,11 +32,11 @@
         NOTHING,
     }
     let button;
-
+let guessString;
     let outcome: Outcome = Outcome.NOTHING;
 
     async function submitGuess() {
-        console.log($activeRiddle.index)
+        console.log($activeRiddle.index);
         console.log(guess);
         // let guessString: string = "";
         if (!guess.length) {
@@ -51,7 +53,7 @@
             }
         }
         console.log("guess", guess);
-        const guessString = guess.join("");
+        guessString = guess.join("");
         console.log("guessString", typeof guessString);
         console.log("guessStringlength", guessString.length);
         // console.log("guessString",guessString);
@@ -75,7 +77,7 @@
         }
 
         if (!$ethereumAccount || !$ethereumAccount.length) {
-            alert("Please connect your wallet to submit a guess.");
+            setAlert("warning", "Please connect your wallet")
             return;
         }
         button = document.getElementById(
@@ -94,7 +96,7 @@
                 RIDDLER_ABI,
                 provider.getSigner()
             );
-  
+
             const tx = await contract.guess($activeRiddle.index, guessString, {
                 value: $minDepositAmount,
             });
@@ -106,12 +108,15 @@
                     outcome = Outcome.WIN;
                     setAlert(
                         "success",
-                        "You won! The answer was " + guess,
+                        "You won! The answer was " + guessString,
                         "https://goerli.etherscan.io/tx/" + txHash
                     );
                     riddleSolvedNotification.set(true);
                     riddleSolvedNotificationText.set(
-                        "You won! The answer was " + guess+". view on etherscan: https://goerli.etherscan.io/tx/" + txHash
+                        "You won! The answer was " +
+                            guessString +
+                            ". view on etherscan: https://goerli.etherscan.io/tx/" +
+                            txHash
                     );
                     setTimeout(() => {
                         try {
@@ -120,6 +125,7 @@
                             ) as HTMLButtonElement;
 
                             button.innerHTML = "Riddle Solved";
+                            button.classList.add("btn-disabled");
                         } catch (error) {
                             console.log(error);
                         }
@@ -143,17 +149,15 @@
         } catch (error) {
             console.log(error);
             if (error.code === "ACTION_REJECTED") {
-                setAlert(
-                    "error",
-                    "You rejected the transaction"
-                    
-                );
+                setAlert("error", "You rejected the transaction");
             }
             button.innerHTML = "Submit Answer";
             button.classList.remove("btn-disabled");
         }
     }
     async function getRandomRiddle() {
+        guess = [];
+        guessString = "";
         if ($riddles && $riddles.length) {
             try {
                 button = document.getElementById(
@@ -182,6 +186,8 @@
         }
     }
     async function getRiddleByIndex(index) {
+        guess = [];
+        guessString = "";
         let provider;
         console.log("index", index);
         if ($hasMetamask) {
@@ -205,11 +211,7 @@
             activeRiddleIndex.set(index);
             console.log($activeRiddle);
             calculatePayout($activeRiddle, $minDepositAmount);
-            // const payoutSUM =
-            //     $activeRiddle.createRiddleRewardAmount -
-            //     $minDepositAmount +
-            //     $activeRiddle.wrongGuessRewardAmount;
-            // payout.set(payoutSUM);
+            
             setTimeout(() => {
                 try {
                     button = document.getElementById(
@@ -230,18 +232,27 @@
             }, 100);
         } else {
             provider = new ethers.providers.JsonRpcProvider(
-               import.meta.env.VITE_API_KEY
+                import.meta.env.VITE_API_KEY
             );
             const newContract = new Contract(
                 import.meta.env.VITE_CONTRACT_ADDRESS,
                 RIDDLER_ABI,
                 provider
             );
-           
-            const riddle = await newContract.getRiddleByIndex(riddleIndex);
+
+            let riddle;
+            try {
+                riddle = await newContract.getRiddleByIndex(riddleIndex);
+            } catch (error) {
+                console.log(error);
+                setAlert("error", "Not a valid Riddle ID");
+                return;
+            }
             activeRiddle.set(riddle);
             activeRiddleIndex.set(index);
-            calculatePayout(riddle, $minDepositAmount);
+            console.log($activeRiddle);
+            calculatePayout($activeRiddle, $minDepositAmount);
+            
             setTimeout(() => {
                 try {
                     button = document.getElementById(
@@ -264,8 +275,8 @@
     }
     let riddleIndex: number;
 </script>
-<img loading="lazy" class="riddlerImage" src="Riddler.png" alt="" />
 
+<img loading="lazy" class="riddlerImage" src="Riddler.png" alt="" />
 
 <div id="homeText" class="max-w-6/12">
     <p
@@ -303,54 +314,73 @@
 <div class="card shadow-md bg-primary text-primary-content">
     <div class="card-body">
         {#if $activeRiddle}
-            <div class="questions">
-                <div class="questionDetails">
-                    Riddle ID: {$activeRiddle.index}
-                </div>
-                <div style="word-break:break-all" class="questionDetails">
-                    Creator: {$activeRiddle.creator}
-                </div>
+        <div class="card shadow-md bg-primary text-primary-content">
+            <div class="cardQuestion">
+                {$activeRiddle.question}
+                ?
             </div>
-            <div class="questions">
-                <div class="questionDetails">
-                    Question: {$activeRiddle.question}
-                </div>
+            <div  class="overflow-x-auto">
+                <table style="width:100%;"  class="table table-zebra">
+                    <!-- head -->
+        
+                    <tbody style="border-radius:0px;">
+                        <!-- row 1 -->
+        
+                        <tr>
+                            <td style="width:25%;">Creator</td>
+                            <td>{truncateDescription($activeRiddle.creator)}</td>
+                        </tr>
+        
+                        <!-- row 2 -->
+                        <tr>
+                            <td>Initial reward</td>
+                            <td>{$activeRiddle.createdRiddleRewardAmount}</td>
+                        </tr>
+                        <!-- row 3 -->
+                        <tr>
+                            <td>Wrong Guess Bonus</td>
+                            <td>{$activeRiddle.wrongGuessRewardAmount}</td>
+                        </tr>
+                        <!-- row 4 -->
+                        <tr>
+                            <td>Id</td>
+                            <td>{$activeRiddle.index}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <div class="questionDetails">
-                Initial Reward Amount: {$activeRiddle.createRiddleRewardAmount} wei<br
-                />
-                Previous Wrong Guesses Pool + {$activeRiddle.wrongGuessRewardAmount}
-                wei<br />
-                Guess Cost: -{$minDepositAmount} wei<br />
-                Payout Amount: (wei): {$payout}
-            </div>
+            </div> 
             <div id="submitGuess">
-                {#if $activeRiddle && $activeRiddle.length}
-                    {#each { length: $activeRiddle.answerLength } as _, i}
-                        <input
-                            style="width:50px; text-align:center; margin:5px;
+                <div id="submitGuessInputs">
+                    {#if $activeRiddle && $activeRiddle.length}
+                        {#each { length: $activeRiddle.answerLength } as _, i}
+                            <input
+                                style="width:50px; text-align:center; margin:5px;
                        border-radius:5px; border:1px solid black;"
-                            bind:value={guess[i]}
-                            maxlength="1"
-                            type="text"
-                            placeholder=" "
-                            class="autotab input input-bordered input-primary w-full max-w-xs"
-                        />
-                    {/each}
-                {/if}
+                                bind:value={guess[i]}
+                                maxlength="1"
+                                type="text"
+                                placeholder=" "
+                                class="autotab input input-bordered input-primary w-full max-w-xs"
+                            />
+                        {/each}
+                    {/if}
+                </div>
 
-                {#if button && button.disabled && $activeRiddle.isSolved === false}
-                    <button id="submitGuessButton" class="btn btn-disabled"
-                        >Submitting answer..</button
-                    >
-                {:else}
-                    <button
-                        on:click={submitGuess}
-                        id="submitGuessButton"
-                        class="btn">Submit answer</button
-                    >
-                {/if}
+                <div>
+                    {#if button && button.disabled && $activeRiddle.isSolved === false}
+                        <button id="submitGuessButton" class="btn btn-disabled"
+                            >Submitting answer..</button
+                        >
+                    {:else}
+                        <button
+                            on:click={submitGuess}
+                            id="submitGuessButton"
+                            class="btn">Submit answer</button
+                        >
+                    {/if}
+                </div>
+
                 <!-- svelte-ignore empty-block -->
             </div>
         {:else if !$activeRiddle}
@@ -381,11 +411,14 @@
         {/if}
     </div>
     {#if $riddleSolvedNotification === true}
-    <p class="questionDetails" style="word-break:break-word">{$riddleSolvedNotificationText}</p>
+        <p class="questionDetails" style="word-break:break-word">
+            {$riddleSolvedNotificationText}
+        </p>
     {:else if $riddleSolvedNotification === false}
-    <p class="questionDetails"  style="word-break:break-word">{$riddleSolvedNotificationText}</p>
+        <p class="questionDetails" style="word-break:break-word">
+            {$riddleSolvedNotificationText}
+        </p>
     {/if}
-
 </div>
 
 <br />
@@ -395,44 +428,50 @@
     @tailwind components;
     @tailwind utilities;
 
-    .input {
-    }
-
     #submitGuess {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
     }
-
+    #submitGuessInputs{
+        display:flex;
+        flex-wrap: wrap;
+    }
     .btn-disabled {
         background-color: #6b7280;
         cursor: not-allowed;
         color: black;
     }
 
+  
+    .riddlerImage {
+        position: relative;
+        top: 0px;
+        margin-left: 20px;
+        margin-right: 20px;
+        min-height: 135px;
+    }
     .card {
         display: flex;
-
         grid-gap: 5px;
         max-width: 960px;
         margin: 0 auto;
-
         gap: 10px;
         border: 1px solid black;
         box-shadow: 10px 10px 0px 0px #000000;
     }
-.riddlerImage{
-    position:relative;
-    top:0px;
-    margin-left:20px;
-    margin-right:20px;
-    min-height: 135px;
-}
-    .questions {
-        width: 100%;
-        text-align: center;
-        border-bottom: 1px solid black;
+
+    .cardQuestion {
+        font-size: 1.5em;
+        font-weight: 900;
+        width: 80%;
+        margin-left: 10%;
+        text-shadow: 2px 2px 0px #000000;
+        line-height: normal;
+        word-break: break-all;
     }
+    
     .questionDetails {
         font-size: 2em;
         font-weight: 900;
@@ -445,26 +484,19 @@
 
     @media (min-width: 675px) and (max-width: 900px) {
         .card {
-            width: 100%;
+            width: 90%;
         }
     }
 
     @media (max-width: 675px) {
         .card {
-            width: 100%;
+            width: 90%;
+            font-size: 0.8em;
         }
-        .ascii-art{
-            /* width:350px; */
-            /* top:50px; */
-            /* top:-120px; */
-            font-size: 0.5em;
-            line-height: 0.95em;
-
+        .riddlerImage {
+            width: 90%;
         }
-        .riddlerImage{
-            width:90%;
-        }
-        #homeText{
+        #homeText {
             /* margin-top:-120px; */
         }
     }
