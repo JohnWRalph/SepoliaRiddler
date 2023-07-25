@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { ethereumAccount, ethProvider, isGoerli } from "../store/account";
-import checkChainForGoerli from "./checkChainForGoerli";
+import { ethereumAccount, ethProvider, isTaiko } from "../store/account";
+import checkChainForTaiko from "./checkChainForTaiko";
 import checkForEthereum from "./checkForEthereum";
 
 async function connectMetaMask() {
@@ -18,8 +18,8 @@ async function connectMetaMask() {
         ethereumAccount.set(accounts[0]);
     }
 
-    if ((await checkChainForGoerli()) === false) {
-        isGoerli.set(false);
+    if ((await checkChainForTaiko()) === false) {
+        isTaiko.set(false);
         return;
     }
 }

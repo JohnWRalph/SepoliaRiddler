@@ -3,7 +3,6 @@
   import { solvedRiddles } from "../store/riddles";
   import RiddleCard from "./RiddleCard.svelte";
   import truncateDescription from "../utils/truncateDescription";
-
   let account;
 </script>
 
@@ -80,11 +79,7 @@
   align-items:center;
   justify-content:center;
 }
-  .questions {
-    width: 100%;
-    text-align: center;
-    border-bottom: 1px solid black;
-  }
+
   .questionDetails {
     font-size: 2em;
     font-weight: 900;

@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { ethereumAccount, hasMetamask, isGoerli } from "../store/account";
+  import { ethereumAccount, hasMetamask, isTaiko } from "../store/account";
   import connectMetaMask from "../utils/connectMetamask";
-  import switchChainToGoerli from "../utils/switchChainToGoerli";
+    import switchChainToTaiko from "../utils/switchChainToTaiko";
   import truncateDescription from "../utils/truncateDescription";
 </script>
 
 <div id="navbar" class="navbar">
   <div>
     {#if $hasMetamask}
-      {#if $ethereumAccount && $ethereumAccount.length && $isGoerli}
+      {#if $ethereumAccount && $ethereumAccount.length && $isTaiko}
         Signed in as: {truncateDescription($ethereumAccount)}
       {:else if !$ethereumAccount}
         <button class="btn btn-primary" on:click={() => connectMetaMask()}
@@ -16,10 +16,10 @@
         >
       {:else if $ethereumAccount && $ethereumAccount.length}
         <button
-          id="switchToGoerliButton"
+          id="switchToTaikoButton"
           class="btn btn-primary"
-          on:click={async () => switchChainToGoerli()}
-          >Switch chain To Goerli</button
+          on:click={async () => switchChainToTaiko()}
+          >Switch chain To Taiko</button
         >
       {/if}
     {:else}
@@ -31,19 +31,24 @@
     {/if}
   </div>
   <div class="navbarLinks" style="position:absolute;right:0;gap:10px;">
-    <button on:click={()=>  window.open("https://goerli.etherscan.io/address/0xe4a595fdb21d3b9927800bcca9af395f94ba5049")} class="btn navbarButton" style="display:flex; flex-direction:row;">
+    <button
+      on:click={() =>
+        window.open(
+          "https://Taiko.etherscan.io/address/0xe1144036a9a443247981accab9ae70f0d0c7076b"
+        )}
+      class="btn navbarButton"
+      style="display:flex; flex-direction:row;"
+    >
       <img style="height:100%;" src="etherscan-logo.svg" alt="" />
     </button>
-   
-
-    <button on:click={() => window.open("https://github.com/JohnWRalph/Riddler")} class=" btn navbarButton" style="display:flex; flex-direction:row;">
+    <button
+      on:click={() => window.open("https://github.com/JohnWRalph/Riddler")}
+      class=" btn navbarButton"
+      style="display:flex; flex-direction:row;"
+    >
+      <img style="height:100%;" src="GitHub_Logo_White.png" alt="" />
       <img
-        style="height:100%;"
-        src="GitHub_Logo_White.png"
-        alt=""
-      />
-      <img
-      id="github-mark"
+        id="github-mark"
         style="height:100%;"
         src="github-mark-white.svg"
         alt=""
@@ -69,8 +74,6 @@
     display: flex;
   }
 
- 
-
   @media (max-width: 775px) {
     #navbar {
       flex-direction: column;
@@ -81,7 +84,6 @@
       top: 60px;
       right: 50%;
       width: 100%;
-      /* transform:translateX(-50%); */
     }
     .navbarButton {
       width: 45%;
@@ -90,6 +92,5 @@
     #github-mark {
       display: none;
     }
-    
   }
 </style>

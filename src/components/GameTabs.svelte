@@ -3,10 +3,13 @@
     import Profile from "./Profile.svelte";
     import Riddler from "./Riddler.svelte";
     import Create from "./Create.svelte";
-
-    let selectedTab = 0; 
-    const tabs = ["Unsolved","Create","All Solved Riddles",  "Solved By Address"];
-   
+    let selectedTab = 0;
+    const tabs = [
+        "Unsolved",
+        "Create",
+        "All Solved Riddles",
+        "Solved By Address",
+    ];
 </script>
 
 <div class="tabs tabs-boxed">
@@ -21,18 +24,18 @@
     {/each}
 </div>
 <main>
-{#if selectedTab === 0}
-<Riddler />
-
-{:else if selectedTab === 1}
-<Create />
-{:else if selectedTab === 2}
-    <!-- <RandomRiddle/> -->
-    <LeaderBoard />
-{:else if selectedTab === 3}
-<Profile />
-{/if}
+    {#if selectedTab === 0}
+        <Riddler />
+    {:else if selectedTab === 1}
+        <Create />
+    {:else if selectedTab === 2}
+        <!-- <RandomRiddle/> -->
+        <LeaderBoard />
+    {:else if selectedTab === 3}
+        <Profile />
+    {/if}
 </main>
+
 <!-- {#if riddles} -->
 <style global lang="postcss">
     @tailwind base;
@@ -49,44 +52,33 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        border-color:white;
-        height:100px;
+        border-color: white;
+        height: 100px;
     }
 
     .tab {
         width: 20%;
         margin-left: 5px;
         margin-right: 5px;
-        border:1px solid grey;
-        
+        border: 1px solid grey;
     }
- 
 
     main {
-  margin-top:150px;
- 
- 
-  width:100vw;
-  display:flex;
-  flex-direction:column;
-  align-items:center; 
-  justify-content:center;
-  
-}
+        margin-top: 150px;
 
-@media (min-width: 775px) and (max-width: 900px) {
-        .card {
-            width: 100%;
-        }
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-
     @media (max-width: 775px) {
         .tabs {
-            top:120px;
+            top: 120px;
             width: 100%;
         }
         .tab {
-            width:40%;
+            width: 40%;
         }
     }
 </style>

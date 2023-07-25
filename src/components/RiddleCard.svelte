@@ -77,16 +77,7 @@
         line-height: normal;
         word-break: break-all;
     }
-    .questionDetails {
-        font-size: 2em;
-        font-weight: 900;
-        width: 80%;
-        margin-left: 10%;
-        text-shadow: 2px 2px 0px #000000;
-        line-height: normal;
-        word-break: break-all;
-    }
-
+ 
     @media (min-width: 675px) and (max-width: 900px) {
         .card {
             width: 100%;

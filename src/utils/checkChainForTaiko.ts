@@ -1,9 +1,10 @@
 import { ethers } from "ethers";
-import { isGoerli } from "../store/account";
+import { isTaiko } from "../store/account";
+
 import checkForEthereum from "./checkForEthereum";
 
-async function checkChainForGoerli(): Promise<boolean> {
-    //get chain id
+async function checkChainForTaiko(): Promise<boolean> {
+    // get chain id
     if ((await checkForEthereum()) === false) {
         return false;
     }
@@ -14,13 +15,13 @@ async function checkChainForGoerli(): Promise<boolean> {
     const chainId = await provider.getNetwork();
     console.log(chainId);
 
-    if (chainId.chainId === 5) {
-        isGoerli.set(true);
+    if (chainId.chainId === 167006) {
+        isTaiko.set(true);
         return true;
     } else {
-        isGoerli.set(false);
-        return false;
+        isTaiko.set(false);
+        return true;
     }
 }
 
-export default checkChainForGoerli;
+export default checkChainForTaiko;

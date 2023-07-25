@@ -2,9 +2,7 @@
   import { isLoadingRiddles, solvedRiddles } from "../store/riddles";
     import truncateDescription from "../utils/truncateDescription";
     import RiddleCard from "./RiddleCard.svelte";
-    console.log($solvedRiddles)
 </script>
-
 
 <div class="riddleContainer">
   {#if $solvedRiddles && $solvedRiddles.length}
@@ -54,11 +52,9 @@
   @tailwind utilities;
   .card {
     display: flex;
-
     grid-gap: 5px;
    width:100%;
     margin: 0 auto;
-
     gap: 10px;
     border: 1px solid black;
     box-shadow: 10px 10px 0px 0px #000000;
@@ -66,9 +62,7 @@
   .riddleContainer {
     display: flex;
     flex-direction: column;
-
     height: 100%;
-
     grid-gap: 5px;
     max-width: 960px;
     margin-top: 50px;
