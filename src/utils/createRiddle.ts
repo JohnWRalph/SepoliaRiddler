@@ -94,8 +94,8 @@ const ethereumAccountStore = get(ethereumAccount)
 
         setAlert(
             "success",
-            "Riddle submitted! View on Etherscan:",
-            "https://Taiko.etherscan.io/tx/" + submittedRiddle.hash
+            "Riddle submitted! View on Taiko Explorer:",
+            "https://explorer.l3test.taiko.xyz/tx/" + submittedRiddle.hash
         );
         const submittedRiddleReceipt = await submittedRiddle.wait(1);
         console.log(submittedRiddleReceipt);

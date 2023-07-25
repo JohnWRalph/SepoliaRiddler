@@ -76,13 +76,13 @@ const minDepositAmountStore = get(minDepositAmount);
                 setAlert(
                     "success",
                     "You won! The answer was " + guessString,
-                    "https://Taiko.etherscan.io/tx/" + txHash
+                    "https://explorer.l3test.taiko.xyz/tx/" + txHash
                 );
                 riddleSolvedNotification.set(true);
                 riddleSolvedNotificationText.set(
                     "You won! The answer was " +
                         guessString +
-                        ". View on etherscan: https://explorer.l3test.taiko.xyz/tx/" +
+                        ". View on Taiko Explorer: https://explorer.l3test.taiko.xyz/tx/" +
                         txHash
                 );
                 setTimeout(() => {

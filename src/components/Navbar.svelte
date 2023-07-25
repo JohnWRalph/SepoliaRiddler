@@ -34,7 +34,7 @@
     <button
       on:click={() =>
         window.open(
-          "https://Taiko.etherscan.io/address/0xe1144036a9a443247981accab9ae70f0d0c7076b"
+          "https://explorer.l3test.taiko.xyz/address/0x70E217b6a086327246ef0868a0dF4B7d282256F6"
         )}
       class="btn navbarButton"
       style="display:flex; flex-direction:row;"
