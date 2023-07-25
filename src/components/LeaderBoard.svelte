@@ -1,7 +1,10 @@
 <script lang="ts">
   import { isLoadingRiddles, solvedRiddles } from "../store/riddles";
+    import getsolvedRiddles from "../utils/getSolvedRiddles";
     import truncateDescription from "../utils/truncateDescription";
     import RiddleCard from "./RiddleCard.svelte";
+
+    getsolvedRiddles(import.meta.env.VITE_CONTRACT_ADDRESS);
 </script>
 
 <div class="riddleContainer">

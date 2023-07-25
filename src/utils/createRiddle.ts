@@ -1,4 +1,5 @@
 import { Contract, ethers } from "ethers";
+import { toUtf8Bytes } from "ethers/lib/utils";
 import { get } from "svelte/store";
 import RIDDLER_ABI from "../abi/RIDDLER_ABI";
 import { ethereumAccount } from "../store/account";
@@ -85,13 +86,13 @@ const ethereumAccountStore = get(ethereumAccount)
         const submittedRiddle = await newContract.createRiddle(
             question,
             answerStructure,
-            answer.toLowerCase(),
+            ethers.utils.keccak256(toUtf8Bytes(answer.toLowerCase())),
             reward,
             {
                 value: reward,
             }
         );
-
+console.log("after submit",submittedRiddle);
         setAlert(
             "success",
             "Riddle submitted! View on Taiko Explorer:",

@@ -34,12 +34,12 @@
     <button
       on:click={() =>
         window.open(
-          "https://explorer.l3test.taiko.xyz/address/0x70E217b6a086327246ef0868a0dF4B7d282256F6"
+          "https://explorer.l3test.taiko.xyz/address/0xc983e551f36Dbb4689CFb988aa7F9Df43E939556"
         )}
       class="btn navbarButton"
       style="display:flex; flex-direction:row;"
-    >
-      <img style="height:100%;" src="etherscan-logo.svg" alt="" />
+    >View contract
+      <img style="height:100%;" src="taiko.png" alt="" />
     </button>
     <button
       on:click={() => window.open("https://github.com/JohnWRalph/Riddler")}
