@@ -31,7 +31,7 @@
     {/if}
   </div>
   <div class="navbarLinks" style="position:absolute;right:0;gap:10px;">
-    <button class="btn navbarButton" style="display:flex; flex-direction:row;">
+    <button on:click={()=>  window.open("https://goerli.etherscan.io/address/0xe4a595fdb21d3b9927800bcca9af395f94ba5049")} class="btn navbarButton" style="display:flex; flex-direction:row;">
       <img style="height:100%;" src="etherscan-logo.svg" alt="" />
     </button>
    

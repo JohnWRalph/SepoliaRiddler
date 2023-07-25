@@ -96,7 +96,6 @@
                     value: $minDepositAmount,
                 }
             );
-
             txHash = tx.hash;
             const receipt = await tx.wait(1);
             (receipt.events || []).find((event) => {
