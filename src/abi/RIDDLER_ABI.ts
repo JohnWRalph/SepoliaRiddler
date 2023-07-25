@@ -110,9 +110,9 @@ export default   [
         "type": "string"
       },
       {
-        "internalType": "string",
+        "internalType": "bytes32",
         "name": "answer",
-        "type": "string"
+        "type": "bytes32"
       },
       {
         "internalType": "uint256",
