@@ -8,7 +8,7 @@ async function getsolvedRiddles(contract): Promise<any> {
 
   //rpc provider
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://rpc.l3test.taiko.xyz"
+    import.meta.env.VITE_SEPOLIA_RPC_URL
   )
 
   const newContract = new Contract(

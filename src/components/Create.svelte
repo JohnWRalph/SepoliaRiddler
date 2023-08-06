@@ -1,20 +1,19 @@
 <script lang="ts">
     import { ethereumAccount } from "../store/account";
     import {
-     
         createdRiddleIndex,
         createdRiddle,
         createdAnswer,
         convertedRiddle,
         riddleStructure,
     } from "../store/riddles";
-    import { hasMetamask, isTaiko } from "../store/account";
+    import { hasMetamask, isSepolia } from "../store/account";
     import checkForEthereum from "../utils/checkForEthereum";
     import connectMetaMask from "../utils/connectMetamask";
     import createRiddle from "../utils/createRiddle";
     import { isModalOpen } from "../store/alert";
     import preventSpecialChar from "../utils/preventSpecialCharacter";
-    import switchChainToTaiko from "../utils/switchChainToTaiko";
+    import switchChainToSepolia from "../utils/switchChainToSepolia";
 
     //checks
     checkForEthereum();
@@ -33,7 +32,7 @@
     text-shadow: 2px 2px 0px #000000;
     line-height: normal;"
     >
-        Submit a Riddle or a piece of Trivia, then share with friends!
+        Submit a riddle or a piece of trivia, then share with friends!
     </p>
 
     <p
@@ -86,7 +85,12 @@ text-shadow: 2px 2px 0px #000000;
                         {:else}
                             <button
                                 id="createRiddleButton"
-                                on:click={() => createRiddle(submitQuestion, submitAnswer, reward)}
+                                on:click={() =>
+                                    createRiddle(
+                                        submitQuestion,
+                                        submitAnswer,
+                                        reward
+                                    )}
                                 class="btn"
                             >
                                 Submit
@@ -99,10 +103,10 @@ text-shadow: 2px 2px 0px #000000;
                         >
                     {:else if $ethereumAccount && $ethereumAccount.length}
                         <button
-                            id="switchToTaikoButton"
+                            id="switchToSepoliaButton"
                             class="btn"
-                            on:click={async () => switchChainToTaiko()}
-                            >Switch chain To Taiko</button
+                            on:click={async () => switchChainToSepolia()}
+                            >Switch chain To Sepolia</button
                         >
                     {/if}
                 {:else}
@@ -113,15 +117,19 @@ text-shadow: 2px 2px 0px #000000;
                         >Download Metamask</button
                     >
                 {/if}
+                {#if $createdRiddle}
+                <button class="btn modal-button" on:click={() => isModalOpen.set(true)}
+                    >View Created Riddle</button
+                >
+                {/if}
             </div>
+           
         </div>
     </div>
 </div>
 
 {#if $createdRiddle}
-    <button class="btn modal-button" on:click={() => (isModalOpen.set(true))}
-        >View Created Riddle</button
-    >
+   
 
     <div class="modal" class:modal-open={$isModalOpen}>
         <div class="modal-box">
@@ -130,8 +138,8 @@ text-shadow: 2px 2px 0px #000000;
                 Save this information. The answer will be encrypted on chain and
                 won't be revealed again until the riddle is solved.
             </h3>
-            <h2 class="card-title">
-                Riddle ID: {$createdRiddleIndex}
+            <h2 style="margin-bottom:10px;" class="card-title text-med">
+                Riddle ID: {$createdRiddleIndex} (Share this number with friends. They can enter it in on the homepage to find your submission.)
             </h2>
             Creator: {$createdRiddle.creator}
             Question: {$createdRiddle.question}<br />
@@ -140,7 +148,7 @@ text-shadow: 2px 2px 0px #000000;
             />
 
             <div class="modal-action">
-                <button class="btn" on:click={() => (isModalOpen.set(false))}
+                <button class="btn" on:click={() => isModalOpen.set(false)}
                     >Close</button
                 >
             </div>
@@ -157,5 +165,9 @@ text-shadow: 2px 2px 0px #000000;
         background-color: #6b7280;
         cursor: not-allowed;
         color: black;
+    }
+
+    .class-title{
+        font-size:.5rem;
     }
 </style>

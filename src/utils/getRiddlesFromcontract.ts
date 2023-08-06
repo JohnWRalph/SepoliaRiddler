@@ -1,13 +1,13 @@
 import { Contract, ethers } from "ethers";
 import RIDDLER_ABI from "../abi/RIDDLER_ABI";
 import { activeRiddle, isLoadingRiddles, minDepositAmount, riddles, solvedRiddles, unsolvedRiddles } from "../store/riddles";
-import checkChainForTaiko from "./checkChainForTaiko";
+import checkChainForSepolia from "./checkChainForSepolia";
 import getsolvedRiddles from "./getSolvedRiddles";
 import { get } from 'svelte/store';
 async function getRiddlesFromContract() {
     let provider;
 
-    if ((window as any).ethereum && (await checkChainForTaiko()) === true) {
+    if ((window as any).ethereum && (await checkChainForSepolia()) === true) {
         provider = new ethers.providers.Web3Provider((window as any).ethereum);
         isLoadingRiddles.set(true);
     } else {

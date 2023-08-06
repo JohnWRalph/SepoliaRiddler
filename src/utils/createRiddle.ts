@@ -5,12 +5,12 @@ import RIDDLER_ABI from "../abi/RIDDLER_ABI";
 import { ethereumAccount } from "../store/account";
 import { isModalOpen } from "../store/alert";
 import { createdAnswer, createdRiddle, createdRiddleIndex } from "../store/riddles";
-import checkChainForTaiko from "./checkChainForTaiko";
+import checkChainForSepolia from "./checkChainForSepolia";
 import checkForEthereum from "./checkForEthereum";
 import getRiddlesLength from "./getRiddlesCount";
 import { setAlert } from "./setAlert";
 
-async function createRiddle(question,answer,reward) {
+async function createRiddle(question, answer, reward) {
     if ((await checkForEthereum()) === false) {
         setAlert(
             "error",
@@ -20,11 +20,11 @@ async function createRiddle(question,answer,reward) {
         return;
     }
 
-    if ((await checkChainForTaiko()) === false) {
-        setAlert("error", "Please switch to Taiko");
+    if ((await checkChainForSepolia()) === false) {
+        setAlert("error", "Please switch to Sepolia");
         return;
     }
-const ethereumAccountStore = get(ethereumAccount)
+    const ethereumAccountStore = get(ethereumAccount)
     if (!ethereumAccountStore || !ethereumAccountStore.length) {
         setAlert("error", "Please connect your wallet to submit a guess.");
         return;
@@ -92,10 +92,10 @@ const ethereumAccountStore = get(ethereumAccount)
                 value: reward,
             }
         );
-console.log("after submit",submittedRiddle);
+        console.log("after submit", submittedRiddle);
         setAlert(
             "success",
-            "Riddle submitted! View on Taiko Explorer:",
+            "Riddle submitted! View on Sepolia Explorer:",
             "https://explorer.l3test.taiko.xyz/tx/" + submittedRiddle.hash
         );
         const submittedRiddleReceipt = await submittedRiddle.wait(1);
@@ -119,7 +119,7 @@ console.log("after submit",submittedRiddle);
         const riddlesCount = await getRiddlesLength();
         console.log(riddlesCount.toNumber());
         createdRiddleIndex.set(riddlesCount.toNumber() - 1);
-        
+
         var newRiddle = await newContract.getRiddleByIndex(
             riddlesCount.toNumber() - 1
         );

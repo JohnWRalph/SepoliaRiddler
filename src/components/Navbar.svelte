@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { ethereumAccount, hasMetamask, isTaiko } from "../store/account";
+  import { ethereumAccount, hasMetamask, isSepolia } from "../store/account";
   import connectMetaMask from "../utils/connectMetamask";
-    import switchChainToTaiko from "../utils/switchChainToTaiko";
+  import switchChainToSepolia from "../utils/switchChainToSepolia";
   import truncateDescription from "../utils/truncateDescription";
 </script>
 
 <div id="navbar" class="navbar">
   <div>
     {#if $hasMetamask}
-      {#if $ethereumAccount && $ethereumAccount.length && $isTaiko}
+      {#if $ethereumAccount && $ethereumAccount.length && $isSepolia}
         Signed in as: {truncateDescription($ethereumAccount)}
       {:else if !$ethereumAccount}
         <button class="btn btn-primary" on:click={() => connectMetaMask()}
@@ -16,10 +16,10 @@
         >
       {:else if $ethereumAccount && $ethereumAccount.length}
         <button
-          id="switchToTaikoButton"
+          id="switchToSepoliaButton"
           class="btn btn-primary"
-          on:click={async () => switchChainToTaiko()}
-          >Switch chain To Taiko</button
+          on:click={async () => switchChainToSepolia()}
+          >Switch chain To Sepolia</button
         >
       {/if}
     {:else}
@@ -34,12 +34,16 @@
     <button
       on:click={() =>
         window.open(
-          "https://explorer.l3test.taiko.xyz/address/0xc983e551f36Dbb4689CFb988aa7F9Df43E939556"
+          "https://sepolia.etherscan.io/address/0xa3a5bc1fa0cb074ade3ab94b65cd6efd51411ff0"
         )}
       class="btn navbarButton"
       style="display:flex; flex-direction:row;"
-    >View contract
-      <img style="height:100%;" src="taiko.png" alt="" />
+      >View contract
+      <img
+        style="height:100%; margin-left:5px;"
+        src="etherscan-logo-circle.svg"
+        alt=""
+      />
     </button>
     <button
       on:click={() => window.open("https://github.com/JohnWRalph/Riddler")}

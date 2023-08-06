@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { ethereumAccount, ethProvider, isTaiko } from "../store/account";
-import checkChainForTaiko from "./checkChainForTaiko";
+import { ethereumAccount, ethProvider, isSepolia } from "../store/account";
+import checkChainForSepolia from "./checkChainForSepolia";
 import checkForEthereum from "./checkForEthereum";
 
 async function connectMetaMask() {
@@ -18,8 +18,8 @@ async function connectMetaMask() {
         ethereumAccount.set(accounts[0]);
     }
 
-    if ((await checkChainForTaiko()) === false) {
-        isTaiko.set(false);
+    if ((await checkChainForSepolia()) === false) {
+        isSepolia.set(false);
         return;
     }
 }

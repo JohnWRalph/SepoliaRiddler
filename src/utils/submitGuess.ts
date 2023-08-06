@@ -1,9 +1,9 @@
 import { activeRiddle, minDepositAmount, riddleSolvedNotification, riddleSolvedNotificationText } from "../store/riddles";
 import { setAlert } from "./setAlert";
-import {get} from 'svelte/store';
+import { get } from 'svelte/store';
 import checkForEthereum from "./checkForEthereum";
-import checkChainForTaiko from "./checkChainForTaiko";
-import switchChainToTaiko from "./switchChainToTaiko";
+import checkChainForSepolia from "./checkChainForSepolia";
+import switchChainToSepolia from "./switchChainToSepolia";
 import { ethereumAccount } from "../store/account";
 import { Contract, ethers } from "ethers";
 import RIDDLER_ABI from "../abi/RIDDLER_ABI";
@@ -11,7 +11,7 @@ import outcome, { Outcome } from "../store/outcome";
 
 
 async function submitGuess(guess) {
-    
+
     let guessString: string = "";
     if (!guess.length) {
         setAlert("error", "Please enter a guess");
@@ -33,9 +33,9 @@ async function submitGuess(guess) {
         return;
     }
 
-    if ((await checkChainForTaiko()) === false) {
-        //open metamask and switch to Taiko
-        switchChainToTaiko();
+    if ((await checkChainForSepolia()) === false) {
+        //open metamask and switch to Sepolia
+        switchChainToSepolia();
         return;
     }
     const ethereumAccountStore = get(ethereumAccount);
@@ -59,8 +59,8 @@ async function submitGuess(guess) {
             RIDDLER_ABI,
             provider.getSigner()
         );
-const activeRiddleStore = get(activeRiddle);
-const minDepositAmountStore = get(minDepositAmount);
+        const activeRiddleStore = get(activeRiddle);
+        const minDepositAmountStore = get(minDepositAmount);
         const tx = await contract.guess(
             activeRiddleStore.index,
             guessString.toLowerCase(),
@@ -81,9 +81,9 @@ const minDepositAmountStore = get(minDepositAmount);
                 riddleSolvedNotification.set(true);
                 riddleSolvedNotificationText.set(
                     "You won! The answer was " +
-                        guessString +
-                        ". View on Taiko Explorer: https://explorer.l3test.taiko.xyz/tx/" +
-                        txHash
+                    guessString +
+                    ". View on Sepolia Explorer: https://explorer.l3test.taiko.xyz/tx/" +
+                    txHash
                 );
                 setTimeout(() => {
                     try {

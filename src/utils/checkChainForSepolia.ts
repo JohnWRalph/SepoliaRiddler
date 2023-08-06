@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
-import { isTaiko } from "../store/account";
+import { isSepolia } from "../store/account";
 
 import checkForEthereum from "./checkForEthereum";
 
-async function checkChainForTaiko(): Promise<boolean> {
+async function checkChainForSepolia(): Promise<boolean> {
     // get chain id
     if ((await checkForEthereum()) === false) {
         return false;
@@ -15,13 +15,13 @@ async function checkChainForTaiko(): Promise<boolean> {
     const chainId = await provider.getNetwork();
     console.log(chainId);
 
-    if (chainId.chainId === 167006) {
-        isTaiko.set(true);
+    if (chainId.chainId === 11155111) {
+        isSepolia.set(true);
         return true;
     } else {
-        isTaiko.set(false);
+        isSepolia.set(false);
         return true;
     }
 }
 
-export default checkChainForTaiko;
+export default checkChainForSepolia;
