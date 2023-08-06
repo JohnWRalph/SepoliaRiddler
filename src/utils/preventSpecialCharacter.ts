@@ -2,6 +2,9 @@ import isAlphanumericOrNumber from "./isAlphanumericOrNumber";
 import { setAlert } from "./setAlert";
 
 function preventSpecialChar(event: KeyboardEvent) {
+    if (event.key === "Tab"){
+        return;
+    }
     if (!isAlphanumericOrNumber(event)) {
         event.preventDefault();
         setAlert(

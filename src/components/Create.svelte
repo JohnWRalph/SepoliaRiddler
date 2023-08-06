@@ -14,6 +14,7 @@
     import { isModalOpen } from "../store/alert";
     import preventSpecialChar from "../utils/preventSpecialCharacter";
     import switchChainToSepolia from "../utils/switchChainToSepolia";
+    import { ethers } from "ethers";
 
     //checks
     checkForEthereum();
@@ -72,7 +73,7 @@ text-shadow: 2px 2px 0px #000000;
                         <input
                             bind:value={reward}
                             type="number"
-                            placeholder="Reward (wei)"
+                            placeholder="Reward (ETH)"
                             class="input input-bordered input-primary w-full max-w-xs"
                         />
                         {#if createRiddleButton && createRiddleButton.disabled}
@@ -89,7 +90,7 @@ text-shadow: 2px 2px 0px #000000;
                                     createRiddle(
                                         submitQuestion,
                                         submitAnswer,
-                                        reward
+                                        ethers.utils.parseEther(reward.toString())
                                     )}
                                 class="btn"
                             >

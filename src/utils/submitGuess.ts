@@ -76,13 +76,13 @@ async function submitGuess(guess) {
                 setAlert(
                     "success",
                     "You won! The answer was " + guessString,
-                    "https://explorer.l3test.taiko.xyz/tx/" + txHash
+                    "https://sepolia.etherscan.io/tx/" + txHash
                 );
                 riddleSolvedNotification.set(true);
                 riddleSolvedNotificationText.set(
                     "You won! The answer was " +
                     guessString +
-                    ". View on Sepolia Explorer: https://explorer.l3test.taiko.xyz/tx/" +
+                    ". View on Sepolia Explorer: https://sepolia.etherscan.io/tx/" +
                     txHash
                 );
                 setTimeout(() => {
@@ -105,7 +105,7 @@ async function submitGuess(guess) {
             setAlert(
                 "error",
                 "You lost, wrong guess!",
-                "https://explorer.l3test.taiko.xyz/tx/" + txHash
+                "https://sepolia.etherscan.io/tx/" + txHash
             );
             button.innerHTML = "Submit Answer";
             button.classList.remove("btn-disabled");

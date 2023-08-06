@@ -96,7 +96,7 @@ async function createRiddle(question, answer, reward) {
         setAlert(
             "success",
             "Riddle submitted! View on Sepolia Explorer:",
-            "https://explorer.l3test.taiko.xyz/tx/" + submittedRiddle.hash
+            "https://sepolia.etherscan.io/tx/" + submittedRiddle.hash
         );
         const submittedRiddleReceipt = await submittedRiddle.wait(1);
         console.log(submittedRiddleReceipt);

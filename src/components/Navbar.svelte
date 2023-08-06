@@ -46,7 +46,7 @@
       />
     </button>
     <button
-      on:click={() => window.open("https://github.com/JohnWRalph/Riddler")}
+      on:click={() => window.open("https://github.com/JohnWRalph/SepoliaRiddler")}
       class=" btn navbarButton"
       style="display:flex; flex-direction:row;"
     >
