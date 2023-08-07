@@ -16,22 +16,25 @@
     import { formatEther } from "ethers/lib/utils";
     import { setAlert } from "../utils/setAlert";
     // on:keydown={(e) => preventSpecialChar(e)}
-// 
+    //
     //checks
     checkForEthereum();
 
     let createRiddleButton;
-    let submitQuestion: string="";
-    let submitAnswer: string="";
+    let submitQuestion: string = "";
+    let submitAnswer: string = "";
     let reward: number;
-    
-    function removSpecialCharacters(){
-    //if submitanswer has special characters, remove them
-    if(submitAnswer.length >= 0){
-        submitAnswer = submitAnswer.replace(/[^a-zA-Z0-9 ]/g, "");
-        setAlert("warning", "Please limit answers to alphanumeric characters and spaces.")
+
+    function removSpecialCharacters() {
+        //if submitanswer has special characters, remove them
+        if (submitAnswer.length >= 0) {
+            submitAnswer = submitAnswer.replace(/[^a-zA-Z0-9 ]/g, "");
+            setAlert(
+                "warning",
+                "Please limit answers to alphanumeric characters and spaces."
+            );
+        }
     }
-}
 
     // setInterval(() =>{
     //     removSpecialCharacters();
@@ -78,7 +81,7 @@ text-shadow: 2px 2px 0px #000000;
                         <input
                             id="submitAnswerInput"
                             bind:value={submitAnswer}
-                            on:input={()=> removSpecialCharacters()}
+                            on:input={() => removSpecialCharacters()}
                             type="text"
                             placeholder="Answer"
                             class="input input-bordered input-primary w-full max-w-xs"
@@ -104,7 +107,9 @@ text-shadow: 2px 2px 0px #000000;
                                     createRiddle(
                                         submitQuestion,
                                         submitAnswer,
-                                        ethers.utils.parseEther(reward.toString())
+                                        ethers.utils.parseEther(
+                                            reward.toString()
+                                        )
                                     )}
                                 class="btn"
                             >
@@ -133,19 +138,18 @@ text-shadow: 2px 2px 0px #000000;
                     >
                 {/if}
                 {#if $createdRiddle}
-                <button class="btn modal-button" on:click={() => isModalOpen.set(true)}
-                    >View Created Riddle</button
-                >
+                    <button
+                        class="btn modal-button"
+                        on:click={() => isModalOpen.set(true)}
+                        >View Created Riddle</button
+                    >
                 {/if}
             </div>
-           
         </div>
     </div>
 </div>
 
 {#if $createdRiddle}
-   
-
     <div class="modal" class:modal-open={$isModalOpen}>
         <div class="modal-box">
             <h3 class="font-bold text-lg">Submission successful!</h3>
@@ -154,13 +158,15 @@ text-shadow: 2px 2px 0px #000000;
                 won't be revealed again until the riddle is solved.
             </h3>
             <h2 style="margin-bottom:10px;" class="card-title text-med">
-                Riddle ID: {$createdRiddleIndex} (Share this number with friends. They can enter it in on the homepage to find your submission.)
+                Riddle ID: {$createdRiddleIndex} (Share this number with friends.
+                They can enter it in on the homepage to find your submission.)
             </h2>
             Creator: {$createdRiddle.creator}
             Question: {$createdRiddle.question}<br />
             Answer: {$createdAnswer}<br />
-            Initial Reward Amount: (wei): {ethers.utils.formatEther($createdRiddle.createRiddleRewardAmount)} ETH<br
-            />
+            Initial Reward Amount: (wei): {ethers.utils.formatEther(
+                $createdRiddle.createRiddleRewardAmount
+            )} ETH<br />
 
             <div class="modal-action">
                 <button class="btn" on:click={() => isModalOpen.set(false)}
@@ -182,7 +188,7 @@ text-shadow: 2px 2px 0px #000000;
         color: black;
     }
 
-    .class-title{
-        font-size:.5rem;
+    .class-title {
+        font-size: 0.5rem;
     }
 </style>

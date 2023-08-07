@@ -20,6 +20,7 @@
     let guess: string[] = [];
     let button;
     let riddleIndex: number;
+    
 </script>
 <img loading="lazy" class="riddlerImage" src="Riddler.png" alt="" />
 <div id="homeText" class="max-w-6/12">

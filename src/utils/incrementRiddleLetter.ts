@@ -1,27 +1,63 @@
 import isAlphanumericOrNumber from "./isAlphanumericOrNumber";
 import { setAlert } from "./setAlert";
 
-function incrementRiddleLetter(e, riddleStructure, i,guess) {
+function incrementRiddleLetter(e, riddleStructure, i, guess) {
     //control userform input, when typeing in answers
     //move foward or backward through input boxes
     //no special characters
-    
+
     //allow tab to next reward field
     if (e.keyCode === 16) {
         return;
     }
-console.log(e.keyCode)
+
+    if (e.keyCode === 229) {
+        // console.log("mobile")
+        const submitGuessInputs = document.getElementById(
+            "submitGuessInputs"
+        ) as HTMLInputElement;
+        const guessInputDivs = submitGuessInputs.getElementsByClassName(
+            "answerElement"
+        ) as any;
+        setTimeout(() => {
+            // guessInputDivs[i].focus();
+
+            //if the guess[i] is alphanumeric with regex
+
+            if (guess[i].match(/^[0-9a-zA-Z]+$/)) {
+                console.log(guess[i])
+            } else {
+                //if not alphanumeric, set to empty string
+                console.log("not alphanumeric")
+                guess[i] = "";
+                guessInputDivs[i].value = "";
+                setAlert("warning", "Please limit answers to alphanumeric characters and spaces.")
+                setTimeout(() => {
+                    guessInputDivs[i].focus();
+                   
+                }, 0);
+                // guessInputDivs[i].focus();
+                
+                return;
+            }
+
+        }, 10);
+
+
+    }
 
     //if not backspace
     if (e.key !== "Backspace") {
         //check for special character
         if (!isAlphanumericOrNumber(e)) {
-        //     setAlert(
-        //         "warning",
-        //         "Please limit answers to alphanumeric characters and spaces"
-        //     );
+            //     setAlert(
+            //         "warning",
+            //         "Please limit answers to alphanumeric characters and spaces"
+            //     );
             e.preventDefault();
-        //     return; // Prevent the default behavior for non-alphanumeric and non-number keys
+            setAlert("warning", "Please limit answers to alphanumeric characters and spaces.")
+            return;
+            //     return; // Prevent the default behavior for non-alphanumeric and non-number keys
         }
 
         //get the all input boxes for guess from document 
@@ -55,7 +91,16 @@ console.log(e.keyCode)
         }
         // if backspace
     } else {
-       //get inputs
+        console.log(e)
+        if (!isAlphanumericOrNumber(e)) {
+            //     setAlert(
+            //         "warning",
+            //         "Please limit answers to alphanumeric characters and spaces"
+            //     );
+            e.preventDefault();
+            //     return; // Prevent the default behavior for non-alphanumeric and non-number keys
+        }
+        //get inputs
         const submitGuessInputs = document.getElementById(
             "submitGuessInputs"
         ) as HTMLInputElement;
