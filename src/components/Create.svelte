@@ -14,14 +14,29 @@
     import switchChainToSepolia from "../utils/switchChainToSepolia";
     import { ethers } from "ethers";
     import { formatEther } from "ethers/lib/utils";
-
+    import { setAlert } from "../utils/setAlert";
+    // on:keydown={(e) => preventSpecialChar(e)}
+// 
     //checks
     checkForEthereum();
 
     let createRiddleButton;
-    let submitQuestion: string;
-    let submitAnswer: string;
+    let submitQuestion: string="";
+    let submitAnswer: string="";
     let reward: number;
+    
+    function removSpecialCharacters(){
+    //if submitanswer has special characters, remove them
+    if(submitAnswer.length >= 0){
+        submitAnswer = submitAnswer.replace(/[^a-zA-Z0-9 ]/g, "");
+        setAlert("warning", "Please limit answers to alphanumeric characters and spaces.")
+    }
+}
+
+    // setInterval(() =>{
+    //     removSpecialCharacters();
+    // }, 10000
+    // )
 </script>
 
 <div id="homeText" class="max-w-6/12">
@@ -62,8 +77,8 @@ text-shadow: 2px 2px 0px #000000;
                         />
                         <input
                             id="submitAnswerInput"
-                            on:keydown={(e) => preventSpecialChar(e)}
                             bind:value={submitAnswer}
+                            on:input={()=> removSpecialCharacters()}
                             type="text"
                             placeholder="Answer"
                             class="input input-bordered input-primary w-full max-w-xs"
