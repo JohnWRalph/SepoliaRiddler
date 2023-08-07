@@ -10,17 +10,18 @@ function incrementRiddleLetter(e, riddleStructure, i,guess) {
     if (e.keyCode === 16) {
         return;
     }
+console.log(e.keyCode)
 
     //if not backspace
     if (e.key !== "Backspace") {
         //check for special character
         if (!isAlphanumericOrNumber(e)) {
-            setAlert(
-                "warning",
-                "Please limit answers to alphanumeric characters and spaces"
-            );
+        //     setAlert(
+        //         "warning",
+        //         "Please limit answers to alphanumeric characters and spaces"
+        //     );
             e.preventDefault();
-            return; // Prevent the default behavior for non-alphanumeric and non-number keys
+        //     return; // Prevent the default behavior for non-alphanumeric and non-number keys
         }
 
         //get the all input boxes for guess from document 

@@ -113,6 +113,7 @@
                                     style="width:50px; margin:5px; background-color:transparent"
                                 />
                             {:else if letter === "{"}
+                                <!-- svelte-ignore a11y-no-interactive-element-to-noninteractive-role -->
                                 <input
                                     on:keydown={(e) =>
                                         incrementRiddleLetter(
@@ -121,10 +122,18 @@
                                             i,
                                             guess
                                         )}
+
+                                        autocomplete="off"
+                                        autocorrect="off"
+                                        autocapitalize="off"
+                                        spellcheck="false"
+                                       
+                                        role="presentation"
                                     id="spacer-{i}"
                                     style="width:50px; text-align:center; margin:5px;
                           border-radius:5px; border:1px solid black;"
                                     bind:value={guess[i]}
+                                    
                                     maxlength="1"
                                     type="text"
                                     placeholder=" "
