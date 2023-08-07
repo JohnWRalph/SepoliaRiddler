@@ -45,16 +45,16 @@ h1 {
 }
 
 #app {
-  /* max-width: 1280px; */
+
   display:flex;
   flex-direction: column;
   align-items: center;
   color: rgb(34, 139, 34);
-  /* margin: 0 auto; */
-  /* padding: 2rem; */
+ 
   text-align: center;
   height:100%;
-  width:100vw;
+  width: 100vw;
+  overflow-x: hidden;
 
 }
 
@@ -90,15 +90,7 @@ button:focus-visible {
   }
 } */
 
-body {
-  /* margin: auto; */
-  /* font-family: -apple-system, BlinkMacSystemFont, sans-serif; */
-  /* overflow: auto; */
-  /* background: linear-gradient(315deg, rgb(0, 0, 0) 3%,  rgb(11, 61, 0) 68%, rgb(11, 61, 0) 68%, rgb(0, 0, 0) 98%); */
-  /* animation: gradient 30s ease infinite; */
-  /* background-size: 400% 400%; */
-  /* background-attachment: fixed; */
-}
+
 
 /* @keyframes gradient {
   0% {

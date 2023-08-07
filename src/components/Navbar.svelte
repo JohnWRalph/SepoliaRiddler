@@ -82,7 +82,7 @@
     #navbar {
       flex-direction: column;
       height: 120px;
-      width: 100%;
+      width: 100vw;
     }
     .navbarLinks {
       top: 60px;

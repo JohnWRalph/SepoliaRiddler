@@ -75,7 +75,7 @@
     @media (max-width: 775px) {
         .tabs {
             top: 120px;
-            width: 100%;
+            width: 100vw;
         }
         .tab {
             width: 40%;

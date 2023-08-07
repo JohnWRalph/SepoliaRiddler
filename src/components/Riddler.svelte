@@ -243,7 +243,7 @@
     .hero {
         display: flex;
         grid-gap: 5px;
-        width: 800px;
+      width: 800px;
         /* min-width:600px; */
         margin: 0 auto;
         gap: 10px;
@@ -261,6 +261,9 @@
         .card {
             width: 90%;
         }
+        .hero {
+            width: 90%;
+        }
     }
     @media (max-width: 675px) {
         .card {
@@ -272,6 +275,10 @@
         }
         #homeText {
             /* margin-top:-120px; */
+        }
+        .hero {
+            width: 90%;
+            font-size: 0.8em;
         }
     }
 </style>
