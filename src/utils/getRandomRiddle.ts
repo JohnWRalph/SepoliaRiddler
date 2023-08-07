@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { get } from "svelte/store";
 import { ethereumAccount } from "../store/account";
 import { activeRiddle, activeRiddleIndex, isLoadingRiddles, minDepositAmount, riddles, riddleStructure } from "../store/riddles";
@@ -8,20 +9,7 @@ import { setAlert } from "./setAlert";
 
 async function getRandomRiddle(guess) {
     //if ethereum is not available, return
-    if (!(window as any).ethereum) {
-        return;
-    }
-    //if ethereum account is not available, return
-    const ethereumAccountStore = get(ethereumAccount);
-    if (!ethereumAccountStore) {
-        
-        return;
-    }
-    //chain is not sepolia,set alert, return
-    if ((await checkChainForSepolia()) === false) {
-        setAlert("error", "Please switch to Sepolia");
-        return;
-    }
+   
     
     getRiddlesFromContract();
     const riddlesStore = get(riddles);

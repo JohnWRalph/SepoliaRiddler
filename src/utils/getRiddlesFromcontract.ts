@@ -11,7 +11,9 @@ async function getRiddlesFromContract() {
         provider = new ethers.providers.Web3Provider((window as any).ethereum);
         isLoadingRiddles.set(true);
     } else {
-        return;
+        provider = new ethers.providers.JsonRpcProvider(
+            import.meta.env.VITE_SEPOLIA_RPC_URL
+        );
     }
     const newContract = new Contract(
         import.meta.env.VITE_CONTRACT_ADDRESS,

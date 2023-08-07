@@ -3,9 +3,11 @@
   import GameTabs from "./components/GameTabs.svelte";
   import Alert from "./components/Alert.svelte";
   import { ethereumAccount } from "./store/account";
+    import getRiddlesFromContract from "./utils/getRiddlesFromcontract";
 
   window.onload = (event) => {
     isConnected();
+    getRiddlesFromContract();
   };
 
   async function isConnected() {
@@ -15,7 +17,6 @@
     if (accounts.length) {
       ethereumAccount.set(accounts[0]);
     } else {
-      console.log("Metamask is not connected");
     }
   }
 </script>
