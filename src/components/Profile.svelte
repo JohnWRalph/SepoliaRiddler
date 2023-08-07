@@ -87,7 +87,7 @@
     margin-left: 10%;
     text-shadow: 2px 2px 0px #000000;
     line-height: normal;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   #ethAddressLookup {
