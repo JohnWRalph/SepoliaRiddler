@@ -68,9 +68,9 @@
     height: 100%;
     grid-gap: 5px;
     max-width: 960px;
-    margin-top: 50px;
+
+    margin-bottom:50px;
     gap: 20px;
-    /* border: 1px solid white; */
   }
  
   @media (min-width: 675px) and (max-width: 900px) {

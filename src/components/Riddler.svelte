@@ -7,17 +7,13 @@
         riddleStructure,
     } from "../store/riddles";
     import checkForEthereum from "../utils/checkForEthereum";
-
-    import { setAlert } from "../utils/setAlert";
-
     import truncateDescription from "../utils/truncateDescription";
-    import isAlphanumericOrNumber from "../utils/isAlphanumericOrNumber";
-
     import getRiddlesFromContract from "../utils/getRiddlesFromcontract";
     import getRiddleByIndex from "../utils/getRiddleByIndex";
     import getRandomRiddle from "../utils/getRandomRiddle";
     import submitGuess from "../utils/submitGuess";
     import incrementRiddleLetter from "../utils/incrementRiddleLetter";
+    import { ethers } from "ethers";
     //checks
     checkForEthereum();
     getRiddlesFromContract();
@@ -88,13 +84,13 @@
                             <!-- row 2 -->
                             <tr>
                                 <td>Initial reward</td>
-                                <td>{$activeRiddle.createRiddleRewardAmount}</td
+                                <td>{ethers.utils.formatEther($activeRiddle.createRiddleRewardAmount)} ETH</td
                                 >
                             </tr>
                             <!-- row 3 -->
                             <tr>
                                 <td>Wrong Guess Bonus</td>
-                                <td>{$activeRiddle.wrongGuessRewardAmount}</td>
+                                <td>{ethers.utils.formatEther($activeRiddle.wrongGuessRewardAmount)}</td>
                             </tr>
                             <!-- row 4 -->
                             <tr>

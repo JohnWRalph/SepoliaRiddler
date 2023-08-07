@@ -12,10 +12,6 @@ async function getRiddlesFromContract() {
         isLoadingRiddles.set(true);
     } else {
         return;
-        // provider = new ethers.providers.JsonRpcProvider(
-        //   import.meta.env.VITE_API_KEY
-        // );
-        // isLoadingRiddles.set(true);
     }
     const newContract = new Contract(
         import.meta.env.VITE_CONTRACT_ADDRESS,
@@ -24,7 +20,6 @@ async function getRiddlesFromContract() {
     );
     try {
         const allriddles = await newContract.getRiddles();
-
         riddles.set(allriddles);
         const minDepositAmountBN = await newContract.getMinDepositAmount();
         const minDepositAmountNumber = minDepositAmountBN.toNumber();

@@ -4,8 +4,6 @@
         createdRiddleIndex,
         createdRiddle,
         createdAnswer,
-        convertedRiddle,
-        riddleStructure,
     } from "../store/riddles";
     import { hasMetamask, isSepolia } from "../store/account";
     import checkForEthereum from "../utils/checkForEthereum";
@@ -15,6 +13,7 @@
     import preventSpecialChar from "../utils/preventSpecialCharacter";
     import switchChainToSepolia from "../utils/switchChainToSepolia";
     import { ethers } from "ethers";
+    import { formatEther } from "ethers/lib/utils";
 
     //checks
     checkForEthereum();
@@ -145,7 +144,7 @@ text-shadow: 2px 2px 0px #000000;
             Creator: {$createdRiddle.creator}
             Question: {$createdRiddle.question}<br />
             Answer: {$createdAnswer}<br />
-            Initial Reward Amount: (wei): {$createdRiddle.createRiddleRewardAmount}<br
+            Initial Reward Amount: (wei): {ethers.utils.formatEther($createdRiddle.createRiddleRewardAmount)} ETH<br
             />
 
             <div class="modal-action">

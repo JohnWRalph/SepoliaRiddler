@@ -1,22 +1,28 @@
 <script lang="ts">
-  import Router, { push } from "svelte-spa-router";
-  import Home from "./pages/Home.svelte";
   import Navbar from "./components/Navbar.svelte";
-  import Construction from "./pages/Construction.svelte";
   import GameTabs from "./components/GameTabs.svelte";
   import Alert from "./components/Alert.svelte";
+  import { ethereumAccount } from "./store/account";
 
-  const routes = {
-    "/": Home,
-    "/construction": Construction,
+  window.onload = (event) => {
+    isConnected();
   };
+
+  async function isConnected() {
+    const accounts = await (window as any).ethereum.request({
+      method: "eth_accounts",
+    });
+    if (accounts.length) {
+      ethereumAccount.set(accounts[0]);
+    } else {
+      console.log("Metamask is not connected");
+    }
+  }
 </script>
 
 <Navbar />
 <GameTabs />
-<Router {routes} />
 <Alert />
-
 
 <style global lang="postcss">
   @tailwind base;

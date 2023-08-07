@@ -11,38 +11,43 @@ import outcome, { Outcome } from "../store/outcome";
 
 
 async function submitGuess(guess) {
-
+    //guesString will be the value submitted to the blockchain
     let guessString: string = "";
     if (!guess.length) {
         setAlert("error", "Please enter a guess");
         return;
     }
-    console.log("guess", guess);
-    console.log("guesslength", guess.length);
+    //get activeRiddle from svelte store
     const activeRiddleStore = get(activeRiddle);
+
+    //answer guess retrieved from document is an array
+    //convert to string
     for (let i = 0; i < activeRiddleStore.answerStructure.length; i++) {
-        console.log(guess[i]);
         if (!guess[i]) {
             guess[i] = " ";
         }
     }
-    console.log("guess", guess);
     guessString = guess.join("");
-    console.log(guessString);
+    //if ethereum is not available, return
     if ((await checkForEthereum()) === false) {
         return;
     }
 
+
+    //if chain is not sepolia, switch to sepolia
     if ((await checkChainForSepolia()) === false) {
         //open metamask and switch to Sepolia
         switchChainToSepolia();
         return;
     }
+    //get ethereum account from svelte store
     const ethereumAccountStore = get(ethereumAccount);
     if (!ethereumAccountStore || !ethereumAccountStore.length) {
         setAlert("warning", "Please connect your wallet");
         return;
     }
+
+    //disable button and change text to submitting
     var button = document.getElementById(
         "submitGuessButton"
     ) as HTMLButtonElement;
@@ -69,8 +74,11 @@ async function submitGuess(guess) {
             }
         );
         const txHash = tx.hash;
+
+        //wait for transaction to be mined
         const receipt = await tx.wait(1);
         (receipt.events || []).find((event) => {
+            //if after one block, the event is RiddleSolved, set outcome to win
             if (event.event === "RiddleSolved") {
                 outcome.set(Outcome.WIN);
                 setAlert(
@@ -78,6 +86,7 @@ async function submitGuess(guess) {
                     "You won! The answer was " + guessString,
                     "https://sepolia.etherscan.io/tx/" + txHash
                 );
+                //display riddle solved notification text
                 riddleSolvedNotification.set(true);
                 riddleSolvedNotificationText.set(
                     "You won! The answer was " +
@@ -85,6 +94,8 @@ async function submitGuess(guess) {
                     ". View on Sepolia Explorer: https://sepolia.etherscan.io/tx/" +
                     txHash
                 );
+
+                //prevent user from submitting another guess for solved riddle
                 setTimeout(() => {
                     try {
                         button = document.getElementById(
@@ -99,7 +110,7 @@ async function submitGuess(guess) {
                 }, 100);
             }
         });
-
+        //if no events, set outcome to lose
         if (receipt.events.length === 0) {
             outcome.set(Outcome.LOSE);
             setAlert(
@@ -107,6 +118,7 @@ async function submitGuess(guess) {
                 "You lost, wrong guess!",
                 "https://sepolia.etherscan.io/tx/" + txHash
             );
+            //reset button
             button.innerHTML = "Submit Answer";
             button.classList.remove("btn-disabled");
 
@@ -115,9 +127,11 @@ async function submitGuess(guess) {
         }
     } catch (error) {
         console.log(error);
+        //if rejected from wallet, set alert
         if (error.code === "ACTION_REJECTED") {
             setAlert("error", "You rejected the transaction");
         }
+        //reset submit button
         button.innerHTML = "Submit Answer";
         button.classList.remove("btn-disabled");
     }

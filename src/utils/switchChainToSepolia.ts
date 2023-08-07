@@ -7,23 +7,17 @@ async function switchChainToSepolia() {
             method: "wallet_switchEthereumChain",
             params: [
                 {
+                    // chainId must be in hexadecimal numbers
                     chainId: "0xaa36a7"
-
-
-
                 }
-            ],// chainId must be in hexadecimal numbers
+            ],
         });
         isSepolia.set(true);
 
 
     } catch (error) {
         console.log(error);
-        //add sepolia network to metamask
-        
-    
-        // isSepolia.set(true);
-
+        isSepolia.set(false);
     }
 }
 

@@ -1,4 +1,7 @@
 <script lang="ts">
+    import { ethers } from "ethers";
+    import { formatEther } from "ethers/lib/utils";
+
     type riddle = {
         question: string;
         answer: string;
@@ -6,7 +9,7 @@
         solver: string;
         index: number;
     };
-    // export let riddleInfo:riddle
+    
     let riddles: riddle[];
     export let question;
     export let answer;
@@ -40,7 +43,7 @@
                 <!-- row 3 -->
                 <tr>
                     <td>Reward</td>
-                    <td>{payoutRewardAmount}</td>
+                    <td>{ethers.utils.formatEther(payoutRewardAmount)} ETH</td>
                 </tr>
                 <!-- row 4 -->
                 <tr>

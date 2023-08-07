@@ -2,10 +2,6 @@ import { Contract, ethers } from "ethers"
 import RIDDLER_ABI from "../abi/RIDDLER_ABI";
 
 async function getsolvedRiddles(contract): Promise<any> {
-  // const solvedRiddles = await contract.filters.RiddleSolved()
-  // const events = await contract.queryFilter(solvedRiddles, 0, "latest");
-  // return events;
-
   //rpc provider
   const provider = new ethers.providers.JsonRpcProvider(
     import.meta.env.VITE_SEPOLIA_RPC_URL

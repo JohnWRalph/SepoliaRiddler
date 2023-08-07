@@ -80,7 +80,7 @@ async function createRiddle(question, answer, reward) {
     }
     //replace characters in submitAnswer to { and keep spaces
     const answerStructure = answer.replace(/[^ ]/g, "{");
-    console.log(answerStructure);
+   
 
     try {
         const submittedRiddle = await newContract.createRiddle(
@@ -92,15 +92,13 @@ async function createRiddle(question, answer, reward) {
                 value: reward,
             }
         );
-        console.log("after submit", submittedRiddle);
         setAlert(
             "success",
             "Riddle submitted! View on Sepolia Explorer:",
             "https://sepolia.etherscan.io/tx/" + submittedRiddle.hash
         );
         const submittedRiddleReceipt = await submittedRiddle.wait(1);
-        console.log(submittedRiddleReceipt);
-        console.log("after receipt");
+     
         checkPointReached = true;
     } catch (error) {
         if (error.code === "ACTION_REJECTED") {
@@ -117,7 +115,7 @@ async function createRiddle(question, answer, reward) {
             return;
         }
         const riddlesCount = await getRiddlesLength();
-        console.log(riddlesCount.toNumber());
+      
         createdRiddleIndex.set(riddlesCount.toNumber() - 1);
 
         var newRiddle = await newContract.getRiddleByIndex(
