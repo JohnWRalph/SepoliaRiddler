@@ -32,7 +32,7 @@
     line-height: normal;"
         class="py-8"
     >
-        Solve Riddles and Trivia To Earn GETH.
+        Solve Riddles and Trivia To Earn Sepolia ETH.
     </p>
 </div>
 <div style="display:flex; flex-direction:row;" class="join">
