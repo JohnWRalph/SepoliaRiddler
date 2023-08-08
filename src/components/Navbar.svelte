@@ -40,7 +40,7 @@
       style="display:flex; flex-direction:row;"
       >View contract
       <img
-        style="height:100%; margin-left:5px;"
+        style="height:75%; margin-left:5px;"
         src="etherscan-logo-circle.svg"
         alt=""
       />
@@ -53,7 +53,7 @@
       <img style="height:100%;" src="GitHub_Logo_White.png" alt="" />
       <img
         id="github-mark"
-        style="height:100%;"
+        style="height:75%;"
         src="github-mark-white.svg"
         alt=""
       />
