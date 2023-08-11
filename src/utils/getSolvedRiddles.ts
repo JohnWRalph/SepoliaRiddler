@@ -15,6 +15,7 @@ async function getsolvedRiddles(contract): Promise<any> {
 
   const solvedRiddles = await newContract.filters.RiddleSolved()
   const events = await newContract.queryFilter(solvedRiddles, 0, "latest")
+  
   return events
   
 

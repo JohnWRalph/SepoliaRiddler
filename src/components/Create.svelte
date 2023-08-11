@@ -27,7 +27,8 @@
 
     function removSpecialCharacters() {
         //if submitanswer has special characters, remove them
-        if (submitAnswer.length >= 0) {
+        if (submitAnswer.length >= 0 && submitAnswer.match(/[^a-zA-Z0-9 ]/g)) {
+
             submitAnswer = submitAnswer.replace(/[^a-zA-Z0-9 ]/g, "");
             setAlert(
                 "warning",

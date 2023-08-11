@@ -6,6 +6,7 @@ function preventSpecialChar(event: KeyboardEvent) {
         return;
     }
     if (!isAlphanumericOrNumber(event)) {
+        console.log("debug")
         event.preventDefault();
         setAlert(
             "warning",

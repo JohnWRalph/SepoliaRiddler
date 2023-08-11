@@ -54,6 +54,7 @@ function incrementRiddleLetter(e, riddleStructure, i, guess) {
             //         "warning",
             //         "Please limit answers to alphanumeric characters and spaces"
             //     );
+            console.log("debug")
             e.preventDefault();
             setAlert("warning", "Please limit answers to alphanumeric characters and spaces.")
             return;
@@ -93,12 +94,8 @@ function incrementRiddleLetter(e, riddleStructure, i, guess) {
     } else {
         console.log(e)
         if (!isAlphanumericOrNumber(e)) {
-            //     setAlert(
-            //         "warning",
-            //         "Please limit answers to alphanumeric characters and spaces"
-            //     );
+         
             e.preventDefault();
-            //     return; // Prevent the default behavior for non-alphanumeric and non-number keys
         }
         //get inputs
         const submitGuessInputs = document.getElementById(

@@ -12,7 +12,7 @@
     {#each $solvedRiddles as riddle}
     <RiddleCard question={riddle.args.question}
     answer={riddle.args.answer}
-    payoutRewardAmount={riddle.args.payoutRewardAmount.toNumber()}
+    payoutRewardAmount={riddle.args.payoutRewardAmount}
     solver={truncateDescription(riddle.args[0])}
     index={riddle.args.index}
     />

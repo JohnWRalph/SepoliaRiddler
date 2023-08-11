@@ -116,10 +116,10 @@ async function createRiddle(question, answer, reward) {
         }
         const riddlesCount = await getRiddlesLength();
       
-        createdRiddleIndex.set(riddlesCount.toNumber() - 1);
+        createdRiddleIndex.set(riddlesCount - 1);
 
         var newRiddle = await newContract.getRiddleByIndex(
-            riddlesCount.toNumber() - 1
+            riddlesCount - 1
         );
         createdRiddle.set(newRiddle);
         createdAnswer.set(answer);

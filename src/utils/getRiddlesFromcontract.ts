@@ -24,7 +24,7 @@ async function getRiddlesFromContract() {
         const allriddles = await newContract.getRiddles();
         riddles.set(allriddles);
         const minDepositAmountBN = await newContract.getMinDepositAmount();
-        const minDepositAmountNumber = minDepositAmountBN.toNumber();
+        const minDepositAmountNumber = minDepositAmountBN;
         minDepositAmount.set(minDepositAmountNumber);
         var solvedRiddlesSet = await getsolvedRiddles(newContract);
         solvedRiddles.set(solvedRiddlesSet);
